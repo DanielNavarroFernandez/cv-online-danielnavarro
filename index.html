@@ -17,7 +17,7 @@
       --text: #f0f0ff;
       --muted: #8888bb;
       --border: rgba(124,111,255,0.2);
-      --card: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.055);
     }
 
     /* ===================== LIGHT MODE ===================== */
@@ -44,8 +44,7 @@
     html.light .aurora-blob { opacity: 0.05; }
     html.light .skill-card, html.light .exp-card, html.light .project-card,
     html.light .stat-card, html.light .tags-box, html.light .contacto-link {
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
     }
     html.light .project-img-barbershop { background: linear-gradient(135deg, #c8c0ff, #e0c0f0, #b0d0f0); }
     html.light .lang-screen-bg {
@@ -69,7 +68,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem;
       transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
-      backdrop-filter: blur(10px);
+      
       flex-shrink: 0;
     }
     .theme-toggle:hover {
@@ -258,11 +257,11 @@
     .sobre-text p strong { color: var(--text); }
     .sobre-right { display: flex; flex-direction: column; gap: 1.2rem; }
     .sobre-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem; transition: all 0.3s; backdrop-filter: blur(10px); }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem; transition: all 0.3s;  }
     .stat-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(124,111,255,0.15); }
     .stat-number { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { color: var(--muted); font-size: 0.82rem; }
-    .tags-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem; backdrop-filter: blur(10px); }
+    .tags-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem;  }
     .tags-box-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.9rem; }
     .tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .ftag { background: rgba(124,111,255,0.1); border: 1px solid rgba(124,111,255,0.2); color: var(--text); font-size: 0.82rem; padding: 0.3rem 0.85rem; border-radius: 100px; }
@@ -271,19 +270,17 @@
 
     /* SKILLS */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
-    .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.8rem; transition: all 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+    .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.8rem; transition: all 0.3s; position: relative; overflow: hidden;  }
     .skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent3)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
     .skill-card:hover { border-color: rgba(124,111,255,0.5); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(124,111,255,0.15); }
     .skill-card:hover::before { transform: scaleX(1); }
     .skill-icon { font-size: 2rem; margin-bottom: 0.9rem; }
     .skill-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
     .skill-desc { color: var(--muted); font-size: 0.87rem; }
-    .skill-bar { margin-top: 1.1rem; height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
-    .skill-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--accent3)); }
 
     /* EXPERIENCIA */
     .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .exp-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.3s; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+    .exp-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.3s;  position: relative; overflow: hidden; }
     .exp-card::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: radial-gradient(circle at top right, rgba(0,212,255,0.1), transparent); border-radius: 0 20px 0 100%; }
     .exp-card:hover { border-color: rgba(124,111,255,0.4); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(124,111,255,0.15); }
     .exp-company { font-size: 0.78rem; font-weight: 600; color: var(--accent3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
@@ -294,7 +291,7 @@
 
     /* PROYECTOS */
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
-    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: all 0.3s; backdrop-filter: blur(10px); }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: all 0.3s;  }
     .project-card:hover { transform: translateY(-8px); border-color: rgba(124,111,255,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
     .project-img { height: 190px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
     .project-img-barbershop { background: linear-gradient(135deg, #0f0f2e, #1a0a3a, #0a1a4a); }
@@ -322,7 +319,7 @@
     .contacto-inner { max-width: 640px; margin: 0 auto; }
     .contacto-inner p { color: var(--muted); font-size: 1.05rem; margin-bottom: 2.5rem; }
     .contacto-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .contacto-link { display: flex; align-items: center; gap: 0.75rem; background: var(--card); border: 1px solid var(--border); color: var(--text); text-decoration: none; padding: 0.9rem 1.5rem; border-radius: 14px; font-weight: 500; font-size: 0.88rem; transition: all 0.25s; backdrop-filter: blur(10px); }
+    .contacto-link { display: flex; align-items: center; gap: 0.75rem; background: var(--card); border: 1px solid var(--border); color: var(--text); text-decoration: none; padding: 0.9rem 1.5rem; border-radius: 14px; font-weight: 500; font-size: 0.88rem; transition: all 0.25s;  }
     .contacto-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(124,111,255,0.2); }
 
     footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); position: relative; z-index: 1; }
@@ -331,63 +328,6 @@
     .fade-in { opacity: 0; transform: translateY(25px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===================== EASTER EGG — HACKER MODE ===================== */
-    #easter-overlay {
-      position: fixed; inset: 0; z-index: 99997;
-      background: rgba(0,0,0,0.92);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    #easter-overlay.active { opacity: 1; pointer-events: all; }
-    #matrix-canvas { position: absolute; inset: 0; opacity: 0.35; }
-    .easter-msg {
-      position: relative; z-index: 2;
-      font-family: 'Courier New', monospace;
-      color: #00ff41;
-      text-align: center;
-      text-shadow: 0 0 20px #00ff41, 0 0 40px #00ff41;
-      animation: easter-flicker 0.15s infinite alternate;
-    }
-    .easter-msg .easter-title {
-      font-size: clamp(1.4rem, 4vw, 2.2rem);
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: 0.1em;
-    }
-    .easter-msg .easter-sub {
-      font-size: clamp(0.8rem, 2vw, 1rem);
-      color: #00cc33;
-      opacity: 0.85;
-      margin-bottom: 0.5rem;
-    }
-    .easter-msg .easter-close {
-      margin-top: 2rem;
-      font-size: 0.75rem;
-      color: #007a1f;
-      animation: none;
-    }
-    .easter-msg .easter-cursor {
-      display: inline-block;
-      width: 10px; height: 1.1em;
-      background: #00ff41;
-      vertical-align: middle;
-      margin-left: 4px;
-      animation: cursor-blink 0.6s step-end infinite;
-    }
-    @keyframes easter-flicker {
-      from { text-shadow: 0 0 15px #00ff41, 0 0 30px #00ff41; }
-      to   { text-shadow: 0 0 25px #00ff41, 0 0 60px #00ff41, 0 0 80px #00cc33; }
-    }
-    /* glitch on body when active */
-    body.hacker-mode #main-site { animation: body-glitch 0.2s steps(2) infinite; }
-    @keyframes body-glitch {
-      0%   { filter: hue-rotate(0deg); }
-      33%  { filter: hue-rotate(90deg) saturate(2); }
-      66%  { filter: hue-rotate(180deg); }
-      100% { filter: hue-rotate(0deg); }
-    }
     * { cursor: none; }
     @media (hover: none), (pointer: coarse) {
       * { cursor: auto; }
@@ -418,10 +358,6 @@
       transform-style: preserve-3d;
       will-change: transform;
     }
-
-    /* ===================== SKILL BAR ANIMATION ===================== */
-    .skill-fill { width: 0 !important; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    .skill-card.bar-animated .skill-fill { width: var(--bar-w) !important; }
 
     /* ===================== TYPING CURSOR ===================== */
     .typing-cursor { display: inline-block; width: 3px; height: 1em; background: var(--accent3); margin-left: 3px; vertical-align: middle; animation: cursor-blink 0.75s step-end infinite; }
@@ -662,18 +598,6 @@
     <div class="aurora-blob"></div>
   </div>
 
-  <!-- Easter Egg overlay -->
-  <div id="easter-overlay">
-    <canvas id="matrix-canvas"></canvas>
-    <div class="easter-msg">
-      <div class="easter-title">&gt; ACCESO CONCEDIDO<span class="easter-cursor"></span></div>
-      <div class="easter-sub">// Hola, hacker. Sabía que alguien lo encontraría.</div>
-      <div class="easter-sub">// Escribe "hack" para activar. Ya lo sabías, ¿verdad?</div>
-      <div class="easter-sub" style="margin-top:0.8rem;">// — Daniel Navarro · Cybersecurity enthusiast</div>
-      <div class="easter-close">[ ESC o clic para salir ]</div>
-    </div>
-  </div>
-
   <!-- ==================== LANGUAGE SCREEN ==================== -->
   <div id="lang-screen">
     <div class="lang-screen-bg"></div>
@@ -764,7 +688,7 @@
         <h2 class="section-title fade-in clip-reveal" data-es="Quién soy" data-en="Who I am">Quién soy</h2>
         <div class="sobre-grid">
           <div class="sobre-text fade-in">
-            <p data-es="Soy <strong>Daniel Navarro</strong>, desarrollador web y de aplicaciones con base en <strong>Madrid</strong>. Actualmente cursando el Grado Superior en Desarrollo de Aplicaciones Web (DAW)." data-en="I'm <strong>Daniel Navarro</strong>, a web and application developer based in <strong>Madrid</strong>. Currently enrolled in the Higher Degree in Web Application Development (DAW).">Soy <strong>Daniel Navarro</strong>, desarrollador web y de aplicaciones con base en <strong>Madrid</strong>. Actualmente cursando el Grado Superior en Desarrollo de Aplicaciones Web (DAW).</p>
+            <p data-es="Soy <strong>Daniel Navarro</strong>, desarrollador web y de aplicaciones con base en <strong>Madrid</strong>. Titulado en el Grado Superior en Desarrollo de Aplicaciones Web (DAW)." data-en="I'm <strong>Daniel Navarro</strong>, a web and application developer based in <strong>Madrid</strong>. Graduated from the Higher Degree in Web Application Development (DAW).">Soy <strong>Daniel Navarro</strong>, desarrollador web y de aplicaciones con base en <strong>Madrid</strong>. Titulado en el Grado Superior en Desarrollo de Aplicaciones Web (DAW).</p>
             <p data-es="Cuento con experiencia real en empresas como <strong>500Cosmetic</strong>, donde trabajé tanto como Diseñador Web como Programador, desarrollando páginas de productos y aplicaciones internas." data-en="I have real-world experience at companies like <strong>500Cosmetic</strong>, where I worked as both a Web Designer and Programmer, building product pages and internal applications.">Cuento con experiencia real en empresas como <strong>500Cosmetic</strong>, donde trabajé tanto como Diseñador Web como Programador, desarrollando páginas de productos y aplicaciones internas.</p>
             <p data-es="Recientemente completé mis prácticas FCT en <strong>Essenzial Green</strong>, donde desarrollé plugins PHP de integración avanzada conectando WordPress con <strong>Dolibarr ERP</strong> y <strong>EspoCRM</strong> mediante APIs REST en un entorno real de empresa." data-en="I recently completed my FCT internship at <strong>Essenzial Green</strong>, where I built advanced PHP integration plugins connecting WordPress with <strong>Dolibarr ERP</strong> and <strong>EspoCRM</strong> via REST APIs in a real company environment.">Recientemente completé mis prácticas FCT en <strong> Essenzial Green</strong>, donde desarrollé plugins PHP de integración avanzada conectando WordPress con <strong>Dolibarr ERP</strong> y <strong>EspoCRM</strong> mediante APIs REST en un entorno real de empresa.</p>
             <p data-es="Me gusta trabajar en equipo y tengo gran interés en aprender cosas nuevas. Me encanta la <strong>ciberseguridad</strong> y es un campo que me gustaría explorar en el futuro." data-en="I enjoy teamwork and have a strong interest in learning new things. I'm passionate about <strong>cybersecurity</strong> and would love to explore it further in the future.">Me gusta trabajar en equipo y tengo gran interés en aprender cosas nuevas. Me encanta la <strong>ciberseguridad</strong> y es un campo que me gustaría explorar en el futuro.</p>
@@ -804,14 +728,14 @@
         <div class="section-label" data-es="Habilidades" data-en="Skills">Habilidades</div>
         <h2 class="section-title fade-in clip-reveal" data-es="Tecnologías" data-en="Technologies">Tecnologías</h2>
         <div class="skills-grid">
-          <div class="skill-card fade-in"><div class="skill-icon">🌐</div><div class="skill-name">HTML & CSS</div><div class="skill-desc" data-es="Maquetación semántica, diseño responsive y animaciones." data-en="Semantic markup, responsive design and animations.">Maquetación semántica, diseño responsive y animaciones.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:85%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">✨</div><div class="skill-name">JavaScript</div><div class="skill-desc" data-es="Interactividad frontend, DOM y lógica dinámica." data-en="Frontend interactivity, DOM manipulation and dynamic logic.">Interactividad frontend, DOM y lógica dinámica.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:65%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">⚙️</div><div class="skill-name">PHP</div><div class="skill-desc" data-es="Plugins personalizados y lógica de servidor." data-en="Custom plugins and server-side logic.">Plugins personalizados y lógica de servidor.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:75%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">🔷</div><div class="skill-name">WordPress</div><div class="skill-desc" data-es="Plugins, temas personalizados y ecosistemas completos." data-en="Plugins, custom themes and complete ecosystems.">Plugins, temas personalizados y ecosistemas completos.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:80%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">🗄️</div><div class="skill-name">MySQL</div><div class="skill-desc" data-es="Diseño de bases de datos y consultas SQL." data-en="Database design and SQL queries.">Diseño de bases de datos y consultas SQL.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:70%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">🛠️</div><div class="skill-name" data-es="Herramientas" data-en="Tools">Herramientas</div><div class="skill-desc" data-es="XAMPP, FileZilla, Git, Cloudflare y hosting." data-en="XAMPP, FileZilla, Git, Cloudflare and hosting.">XAMPP, FileZilla, Git, Cloudflare y hosting.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:72%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">🔗</div><div class="skill-name">REST APIs</div><div class="skill-desc" data-es="Integración con APIs externas: Dolibarr, EspoCRM, autenticación y gestión de peticiones HTTP." data-en="External API integration: Dolibarr, EspoCRM, authentication and HTTP request handling.">Integración con APIs externas: Dolibarr, EspoCRM, autenticación y gestión de peticiones HTTP.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:70%"></div></div></div>
-          <div class="skill-card fade-in"><div class="skill-icon">🏢</div><div class="skill-name" data-es="ERP / CRM" data-en="ERP / CRM">ERP / CRM</div><div class="skill-desc" data-es="Integración y automatización con Dolibarr ERP y EspoCRM en entornos de empresa reales." data-en="Integration and automation with Dolibarr ERP and EspoCRM in real company environments.">Integración y automatización con Dolibarr ERP y EspoCRM en entornos de empresa reales.</div><div class="skill-bar"><div class="skill-fill" style="--bar-w:65%"></div></div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🌐</div><div class="skill-name">HTML & CSS</div><div class="skill-desc" data-es="Maquetación semántica, diseño responsive y animaciones." data-en="Semantic markup, responsive design and animations.">Maquetación semántica, diseño responsive y animaciones.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">✨</div><div class="skill-name">JavaScript</div><div class="skill-desc" data-es="Interactividad frontend, DOM y lógica dinámica." data-en="Frontend interactivity, DOM manipulation and dynamic logic.">Interactividad frontend, DOM y lógica dinámica.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">⚙️</div><div class="skill-name">PHP</div><div class="skill-desc" data-es="Plugins personalizados y lógica de servidor." data-en="Custom plugins and server-side logic.">Plugins personalizados y lógica de servidor.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🔷</div><div class="skill-name">WordPress</div><div class="skill-desc" data-es="Plugins, temas personalizados y ecosistemas completos." data-en="Plugins, custom themes and complete ecosystems.">Plugins, temas personalizados y ecosistemas completos.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🗄️</div><div class="skill-name">MySQL</div><div class="skill-desc" data-es="Diseño de bases de datos y consultas SQL." data-en="Database design and SQL queries.">Diseño de bases de datos y consultas SQL.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🛠️</div><div class="skill-name" data-es="Herramientas" data-en="Tools">Herramientas</div><div class="skill-desc" data-es="XAMPP, FileZilla, Git, Cloudflare y hosting." data-en="XAMPP, FileZilla, Git, Cloudflare and hosting.">XAMPP, FileZilla, Git, Cloudflare y hosting.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🔗</div><div class="skill-name">REST APIs</div><div class="skill-desc" data-es="Integración con APIs externas: Dolibarr, EspoCRM, autenticación y gestión de peticiones HTTP." data-en="External API integration: Dolibarr, EspoCRM, authentication and HTTP request handling.">Integración con APIs externas: Dolibarr, EspoCRM, autenticación y gestión de peticiones HTTP.</div></div>
+          <div class="skill-card fade-in"><div class="skill-icon">🏢</div><div class="skill-name" data-es="ERP / CRM" data-en="ERP / CRM">ERP / CRM</div><div class="skill-desc" data-es="Integración y automatización con Dolibarr ERP y EspoCRM en entornos de empresa reales." data-en="Integration and automation with Dolibarr ERP and EspoCRM in real company environments.">Integración y automatización con Dolibarr ERP y EspoCRM en entornos de empresa reales.</div></div>
         </div>
       </div>
     </section>
@@ -894,12 +818,22 @@
               <a href="https://tfg-danielnavarro.infinityfreeapp.com/wordpress" target="_blank" class="project-link" data-es="Ver en vivo →" data-en="View live →">Ver en vivo →</a>
             </div>
           </div>
-          <div class="project-card fade-in" style="opacity:0.5;">
-            <div class="project-img" style="background:linear-gradient(135deg,#0a0a2a,#1a0a2a,#0a1a2a);">🚀</div>
+          <div class="project-card fade-in">
+            <div class="project-img" style="background:linear-gradient(135deg,#07182e,#0a2540,#06163a);">🖨️</div>
             <div class="project-body">
-              <div class="project-tags"><span class="tag" data-es="Próximamente" data-en="Coming soon">Próximamente</span></div>
-              <div class="project-title" data-es="Próximo proyecto" data-en="Next project">Próximo proyecto</div>
-              <div class="project-desc" data-es="Explorando nuevas tecnologías. ¡Pronto más novedades!" data-en="Exploring new technologies. More news soon!">Explorando nuevas tecnologías. ¡Pronto más novedades!</div>
+              <div class="project-tags"><span class="tag">PWA</span><span class="tag">JavaScript</span><span class="tag">CSS3</span></div>
+              <div class="project-title">PrintCalc</div>
+              <div class="project-desc" data-es="Calculadora de costes de impresión 3D como PWA instalable. Calcula material, tiempo y precio de cada pieza, con funcionamiento offline." data-en="3D printing cost calculator built as an installable PWA. It computes material, time and price per piece, and works offline.">Calculadora de costes de impresión 3D como PWA instalable. Calcula material, tiempo y precio de cada pieza, con funcionamiento offline.</div>
+              <a href="https://printcalc-danielnavarro.netlify.app" target="_blank" class="project-link" data-es="Ver en vivo →" data-en="View live →">Ver en vivo →</a>
+            </div>
+          </div>
+          <div class="project-card fade-in">
+            <div class="project-img" style="background:linear-gradient(135deg,#0a2418,#0d2a1c,#08181a);">🤖</div>
+            <div class="project-body">
+              <div class="project-tags"><span class="tag">Node.js</span><span class="tag">Discord.js</span><span class="tag">JavaScript</span></div>
+              <div class="project-title">Hay Day Bot</div>
+              <div class="project-desc" data-es="Bot de Discord para gestionar compras y ventas de Hay Day: panel visual con menús y botones, carrito por usuario, imágenes generadas automáticamente y más de 400 productos con autocompletado bilingüe." data-en="Discord bot to manage Hay Day trades: visual panel with menus and buttons, per-user cart, auto-generated images and 400+ products with bilingual autocomplete.">Bot de Discord para gestionar compras y ventas de Hay Day: panel visual con menús y botones, carrito por usuario, imágenes generadas automáticamente y más de 400 productos con autocompletado bilingüe.</div>
+              <a href="https://github.com/DanielNavarroFernandez/HayDay-Bot" target="_blank" class="project-link" data-es="Ver en GitHub →" data-en="View on GitHub →">Ver en GitHub →</a>
             </div>
           </div>
         </div>
@@ -933,7 +867,7 @@
           </div>
           <div class="timeline-item fade-in">
             <div class="timeline-dot"></div>
-            <div class="timeline-year" data-es="En curso · Actualmente" data-en="In progress · Currently">En curso · Actualmente</div>
+            <div class="timeline-year" data-es="Completado" data-en="Completed">Completado</div>
             <div class="timeline-title" data-es="Grado Superior — DAW (Desarrollo de Aplicaciones Web)" data-en="Higher Degree — DAW (Web Application Development)">Grado Superior — DAW (Desarrollo de Aplicaciones Web)</div>
             <div class="timeline-place" data-es="Ciclo Formativo de Grado Superior" data-en="Higher Vocational Training">Ciclo Formativo de Grado Superior</div>
             <div class="timeline-desc" data-es="Desarrollo web full stack. TFG: sistema completo para barbería real con WordPress, PHP y MySQL." data-en="Full stack web development. Final project: complete system for a real barbershop using WordPress, PHP and MySQL.">Desarrollo web full stack. TFG: sistema completo para barbería real con WordPress, PHP y MySQL.</div>
@@ -970,7 +904,7 @@
   <script>
     // PARTICLES
     const container = document.getElementById('particles');
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 14; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       const size = Math.random() * 4 + 1;
@@ -1019,16 +953,23 @@
       document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
     }
 
-    // Active nav
+    // Scroll: nav activa + barra de progreso (optimizado con requestAnimationFrame)
     const sections = document.querySelectorAll('section[id]');
-    window.addEventListener('scroll', () => {
+    const navAnchors = document.querySelectorAll('.nav-links a');
+    const progressBar = document.getElementById('scroll-progress');
+    let scrollTicking = false;
+    function onScroll() {
       let current = '';
       sections.forEach(s => { if (window.scrollY + 120 >= s.offsetTop) current = s.id; });
-      document.querySelectorAll('.nav-links a').forEach(a => {
-        a.classList.remove('active');
-        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-      });
-    });
+      navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (total > 0 ? (window.scrollY / total * 100) : 0) + '%';
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) { scrollTicking = true; requestAnimationFrame(onScroll); }
+    }, { passive: true });
+    onScroll();
 
     // ===================== CUSTOM CURSOR =====================
     const dot = document.getElementById('cursor-dot');
@@ -1038,12 +979,7 @@
     function animRing() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
     animRing();
 
-    // ===================== SCROLL PROGRESS =====================
-    const progressBar = document.getElementById('scroll-progress');
-    window.addEventListener('scroll', () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      progressBar.style.width = (window.scrollY / total * 100) + '%';
-    });
+
 
     // ===================== TILT 3D CARDS =====================
     function addTilt(selector) {
@@ -1060,16 +996,6 @@
     addTilt('.skill-card');
     addTilt('.exp-card');
     addTilt('.stat-card');
-
-    // ===================== SKILL BAR ANIMATION =====================
-    const barObs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('bar-animated')) {
-          setTimeout(() => entry.target.classList.add('bar-animated'), 200);
-        }
-      });
-    }, { threshold: 0.4 });
-    document.querySelectorAll('.skill-card').forEach(c => barObs.observe(c));
 
     // ===================== ANIMATED STAT COUNTERS =====================
     function animateCount(el, target, suffix) {
@@ -1146,7 +1072,7 @@
 
     // ===================== HERO FLOATING PARTICLES =====================
     const heroParticles = document.getElementById('hero-particles');
-    for (let i = 0; i < 18; i++) {
+    for (let i = 0; i < 8; i++) {
       const hp = document.createElement('div');
       hp.className = 'hparticle';
       const size = Math.random() * 6 + 2;
@@ -1158,7 +1084,6 @@
         background:${colors[Math.floor(Math.random()*colors.length)]};
         animation-duration:${Math.random()*4+3}s;
         animation-delay:${Math.random()*4}s;
-        filter: blur(${Math.random()*2}px);
       `;
       heroParticles.appendChild(hp);
     }
@@ -1215,83 +1140,6 @@
       });
       card.addEventListener('mouseleave', () => { img.style.transform = ''; });
     });
-
-    // ===================== EASTER EGG — HACKER MODE =====================
-    (function() {
-      const secret = 'hack';
-      let typed = '';
-      let easterActive = false;
-      let matrixInterval = null;
-
-      const overlay = document.getElementById('easter-overlay');
-      const canvas  = document.getElementById('matrix-canvas');
-      const ctx     = canvas.getContext('2d');
-
-      function resizeCanvas() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-
-      // Matrix rain
-      const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEF<>{}[]|/\\hack';
-      let drops = [];
-
-      function initDrops() {
-        const cols = Math.floor(canvas.width / 16);
-        drops = Array.from({ length: cols }, () => Math.random() * -50);
-      }
-
-      function drawMatrix() {
-        ctx.fillStyle = 'rgba(0,0,0,0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00ff41';
-        ctx.font = '14px Courier New';
-        drops.forEach((y, i) => {
-          const ch = chars[Math.floor(Math.random() * chars.length)];
-          ctx.fillStyle = i % 7 === 0 ? '#ffffff' : '#00ff41';
-          ctx.fillText(ch, i * 16, y * 16);
-          if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        });
-      }
-
-      function activateEaster() {
-        if (easterActive) return;
-        easterActive = true;
-        resizeCanvas();
-        initDrops();
-        overlay.classList.add('active');
-        document.body.classList.add('hacker-mode');
-        matrixInterval = setInterval(drawMatrix, 40);
-        // auto-close after 12s
-        setTimeout(deactivateEaster, 12000);
-      }
-
-      function deactivateEaster() {
-        if (!easterActive) return;
-        easterActive = false;
-        overlay.classList.remove('active');
-        document.body.classList.remove('hacker-mode');
-        clearInterval(matrixInterval);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        typed = '';
-      }
-
-      // Listen for keystrokes anywhere on page
-      document.addEventListener('keydown', e => {
-        // don't fire if user is typing in an input
-        if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-        if (e.key === 'Escape') { deactivateEaster(); return; }
-        typed += e.key.toLowerCase();
-        if (typed.length > secret.length) typed = typed.slice(-secret.length);
-        if (typed === secret) activateEaster();
-      });
-
-      // Click overlay to close
-      overlay.addEventListener('click', deactivateEaster);
-    })();
 
     // ===================== THEME TOGGLE =====================
     function toggleTheme() {
