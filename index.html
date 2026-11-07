@@ -1,466 +1,809 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Daniel Navarro — Full-Stack Dev</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daniel Navarro · Full-Stack Developer</title>
+<meta name="description" content="Daniel Navarro, Full-Stack Developer júnior en Madrid. PHP, JavaScript, WordPress e integraciones con ERP y CRM mediante APIs REST.">
+<meta property="og:title" content="Daniel Navarro · Full-Stack Developer">
+<meta property="og:description" content="PHP, JavaScript y WordPress, e integraciones con ERP y CRM mediante APIs REST.">
+<meta name="theme-color" content="#090B10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --amber: #2DD4BF;
-    --amber-dim: rgba(45,212,191,0.64);
-    --amber-faint: rgba(45,212,191,0.30);
-    --bg: #0D0D0D;
-    --surf: #161616;
-    --surf2: #1d1d1d;
-    --green: #6ee787;
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--amber);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    line-height: 1.7;
-    overflow-x: hidden;
-    font-size: 15px;
-  }
-  /* scanlines sutiles tipo CRT */
-  body::after {
-    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.5;
-    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0) 4px);
-  }
-  ::selection { background: var(--amber); color: var(--bg); }
-  ::-webkit-scrollbar { width: 12px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--amber); border: 2px solid var(--bg); }
-  a { color: inherit; text-decoration: none; }
-  .amber-dim { color: var(--amber-dim); }
+/* Noche: fondo casi negro, degradado cian-magenta en el titular, los esquemas y el email; el resto, sobrio */
+:root {
+  --bg: #090B10;
+  --surface: #10141C;
+  --raise: #161B26;
+  --line: #1F2633;
+  --text: #E8ECF3;
+  --muted: #8B95A7;
+  --cyan: #22D3EE;
+  --magenta: #E2409C;
+  --green: #34D399;
+  --grad: linear-gradient(100deg, #22D3EE 0%, #7C8CF0 50%, #E2409C 100%);
+  --sans: 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; background: var(--bg); }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+a, button { touch-action: manipulation; }
+html { -webkit-tap-highlight-color: rgba(34,211,238,.18); }
+img { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 32px; }
+.skip { position: absolute; left: 16px; top: -60px; z-index: 50; padding: 10px 16px; border-radius: 8px; background: var(--text); color: var(--bg); font-weight: 600; text-decoration: none; }
+.skip:focus { top: 12px; }
+main:focus { outline: none; }
 
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 2; }
+/* ---------- Header ---------- */
+.top { position: sticky; top: 0; z-index: 20; background: rgba(9,11,16,.8); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 28px; height: 70px; }
+.brand { font-weight: 700; font-size: 18px; text-decoration: none; margin-right: auto; letter-spacing: -.01em; }
+.brand span { color: var(--muted); font-weight: 500; }
+.nav { display: flex; gap: 24px; }
+.nav a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: color .15s; }
+.nav a:hover { color: var(--text); }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.lang button { font: 600 13px var(--sans); color: var(--muted); background: none; border: 0; padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
 
-  /* ===== NAV ===== */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    background: var(--bg);
-    border-bottom: 2px solid var(--amber);
-  }
-  .nav-in { max-width: 1100px; margin: 0 auto; padding: 0.8rem 5%; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-weight: 800; font-size: 1.05rem; letter-spacing: 0.02em; }
-  .logo::before { content: '> '; color: var(--amber-dim); }
-  .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
-  .nav-links a { font-size: 0.82rem; color: var(--amber-dim); transition: color 0.15s; }
-  .nav-links a:hover { color: var(--amber); }
-  .nav-links a::before { content: '/ '; color: var(--amber-faint); }
-  .nav-tools { display: flex; align-items: center; gap: 1rem; }
-  .lang { display: flex; gap: 0; border: 1px solid var(--amber); }
-  .lang button { background: transparent; color: var(--amber-dim); border: none; font-family: inherit; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; cursor: pointer; }
-  .lang button.active { background: var(--amber); color: var(--bg); }
-  .btn-hire {
-    border: 2px solid var(--amber); background: var(--amber); color: var(--bg);
-    font-family: inherit; font-weight: 700; font-size: 0.78rem; padding: 0.4rem 1rem; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.15s;
-  }
-  .btn-hire:hover { background: var(--bg); color: var(--amber); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 15px var(--sans); text-decoration: none; padding: 12px 22px; border-radius: 10px; cursor: pointer; border: 0; transition: transform .12s, box-shadow .2s, border-color .2s, color .2s; }
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 16px; height: 16px; }
+.btn-grad { background: var(--grad); color: #07080B; }
+.btn-grad:hover { box-shadow: 0 8px 30px rgba(34,211,238,.25), 0 8px 30px rgba(226,64,156,.2); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.btn-ghost:hover { border-color: var(--cyan); }
+.btn-sm { padding: 8px 14px; font-size: 14px; }
 
-  /* ===== HERO ===== */
-  #hero { padding: 9rem 0 5rem; }
-  .sysline { color: var(--amber-dim); font-size: 0.78rem; letter-spacing: 0.1em; border: 1px dashed var(--amber-faint); padding: 0.3rem 0.8rem; display: inline-block; margin-bottom: 1.6rem; }
-  .sysline .dot { color: var(--green); }
-  .prompt { color: var(--amber-dim); font-size: 1rem; margin-bottom: 0.8rem; }
-  .prompt .blink { animation: blink 1s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-  .hero-name { font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
-  .hero-name .l2 { color: var(--amber-dim); }
-  .hero-box {
-    border: 2px solid var(--amber); background: var(--surf);
-    padding: 1.4rem 1.6rem; margin-top: 2rem; max-width: 620px;
-    box-shadow: 6px 6px 0 0 var(--amber-faint);
-  }
-  .hero-box p { font-size: 0.92rem; color: var(--amber-dim); margin-bottom: 1.2rem; }
-  .hero-box p b { color: var(--amber); font-weight: 700; }
-  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .tbtn {
-    border: 2px solid var(--amber); background: transparent; color: var(--amber);
-    font-family: inherit; font-weight: 700; font-size: 0.82rem; padding: 0.55rem 1.1rem; cursor: pointer;
-    transition: all 0.12s; letter-spacing: 0.03em;
-  }
-  .tbtn:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 0 var(--amber); }
-  .tbtn.solid { background: var(--amber); color: var(--bg); }
-  .tbtn.solid:hover { box-shadow: 4px 4px 0 0 var(--amber-faint); }
+/* ---------- Hero ---------- */
+.hero { position: relative; padding: 80px 0 104px; overflow: hidden; }
+.hero::before, .hero::after { content: ''; position: absolute; width: 760px; height: 760px; border-radius: 50%; filter: blur(40px); pointer-events: none; }
+.hero::before { left: -280px; top: -340px; background: radial-gradient(circle, rgba(34,211,238,.17), transparent 65%); }
+.hero::after { right: -260px; bottom: -400px; background: radial-gradient(circle, rgba(226,64,156,.16), transparent 65%); }
+.hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.04fr); gap: 56px; align-items: center; }
 
-  /* divisor ascii */
-  .divider { color: var(--amber-faint); font-size: 0.8rem; overflow: hidden; white-space: nowrap; margin: 1rem 0; letter-spacing: 0.1em; }
+.avail { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); padding: 6px 14px 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(16,20,28,.6); }
+.avail i { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.avail i::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--green); opacity: 0; animation: ping 2.4s ease-out 2; }
+@keyframes ping { 0% { transform: scale(.6); opacity: .7; } 80%, 100% { transform: scale(1.8); opacity: 0; } }
 
-  /* ===== SECTION HEADER ===== */
-  section { padding: 4rem 0; }
-  .sec-h { font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 800; margin-bottom: 2rem; letter-spacing: -0.01em; }
-  .sec-h::before { content: '± '; color: var(--amber-dim); }
+.hello { margin-top: 30px; display: flex; align-items: center; gap: 12px; font-size: 19px; font-weight: 500; }
+.hello .ring { padding: 2px; border-radius: 50%; background: var(--grad); }
+.hello img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--bg); }
+.hero h1 { margin-top: 14px; font-size: clamp(54px, 6.7vw, 98px); font-weight: 700; line-height: .98; letter-spacing: -.045em; padding-bottom: .08em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lead { margin-top: 18px; font-size: 19px; color: var(--muted); max-width: 46ch; }
+.hero .lead strong { color: var(--text); font-weight: 500; }
+.hero .actions { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
 
-  /* ===== TERMINAL WINDOW ===== */
-  .term { border: 2px solid var(--amber); background: var(--surf); box-shadow: 6px 6px 0 0 var(--amber-faint); }
-  .term-bar { border-bottom: 2px solid var(--amber); padding: 0.5rem 0.9rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.76rem; color: var(--amber-dim); }
-  .term-bar .sq { width: 11px; height: 11px; border: 1.5px solid var(--amber); display: inline-block; }
-  .term-bar .fname { margin-left: 0.4rem; }
-  .term-bar .ctrls { margin-left: auto; letter-spacing: 0.15em; }
-  .term-body { padding: 1.4rem 1.5rem; }
+/* Integration card: diagram + code */
+.viz { border-radius: 18px; border: 1px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box; box-shadow: 0 30px 80px rgba(0,0,0,.55); min-width: 0; }
+.viz-top { display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border-bottom: 1px solid var(--line); }
+.viz-tabs { display: inline-flex; gap: 3px; padding: 3px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
+.viz-tabs button { font: 500 14px var(--sans); color: var(--muted); background: none; border: 0; padding: 6px 14px; border-radius: 7px; cursor: pointer; transition: color .15s, background .15s; }
+.viz-tabs button:hover { color: var(--text); }
+.viz-tabs button[aria-selected="true"] { background: var(--raise); color: var(--text); box-shadow: inset 0 0 0 1px #2A3343; }
+.viz-where { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; margin-left: auto; }
+.viz-pause { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); cursor: pointer; transition: color .15s, border-color .15s; }
+.viz-pause:hover { color: var(--text); border-color: #33405A; }
+.viz-pause svg { width: 14px; height: 14px; }
+.viz-pause .play { display: none; }
+.viz-pause[aria-pressed="true"] .play { display: block; }
+.viz-pause[aria-pressed="true"] .pause { display: none; }
+.viz-panel { padding: 14px 16px 6px; }
+.viz svg { display: block; width: 100%; height: auto; }
+.viz .v { display: none; }
+.viz figcaption { margin: 4px 16px 0; padding: 12px 0 16px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--muted); }
+.viz figcaption b { color: var(--text); font-weight: 600; }
 
-  /* ABOUT */
-  .about-grid { display: grid; grid-template-columns: 220px 1fr; gap: 1.6rem; align-items: start; }
-  .photo-frame { border: 2px solid var(--amber); position: relative; aspect-ratio: 1; overflow: hidden; }
-  .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.06) brightness(1.03); }
-  .photo-frame::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,0.25) 3px 4px); pointer-events: none; }
-  .photo-cap { font-size: 0.68rem; color: var(--amber-dim); margin-top: 0.5rem; text-align: center; }
-  .uinfo h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; }
-  .uinfo p { font-size: 0.88rem; color: var(--amber-dim); margin-bottom: 1rem; }
-  .uinfo .meta { font-size: 0.82rem; }
-  .uinfo .meta div { margin-bottom: 0.25rem; }
-  .uinfo .meta .k { color: var(--amber-faint); }
-  .uinfo .meta .v { color: var(--amber); }
-  .uinfo .meta .v.ok { color: var(--green); }
-  .ustats { display: flex; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
-  .ustat { border: 1px solid var(--amber-faint); padding: 0.6rem 1rem; flex: 1; min-width: 130px; }
-  .ustat .n { font-size: 1.5rem; font-weight: 800; }
-  .ustat .t { font-size: 0.66rem; color: var(--amber-dim); }
+svg .node rect { fill: #121722; stroke: #2A3343; stroke-width: 1.2; }
+svg .node .t { font-family: var(--sans); font-weight: 600; font-size: 15px; fill: #E8ECF3; }
+svg .node .s { font-family: var(--sans); font-weight: 500; font-size: 11.5px; fill: #8B95A7; }
+svg .core rect { fill: #0D121B; stroke: url(#gEdge); stroke-width: 1.8; }
+svg .core .t { fill: #FFFFFF; font-size: 16px; }
+svg .core .s { fill: #A9B4C8; }
+svg .wire { fill: none; stroke: #2EB8D6; stroke-width: 1.4; stroke-dasharray: 4 5; opacity: .75; }
+svg .wire.m { stroke: #C94C9C; }
+svg .tag { font-family: var(--mono); font-size: 10.5px; font-weight: 500; fill: #5EE0F5; }
+svg .tag.m { fill: #F07CC0; }
+svg .dot { fill: #22D3EE; }
+svg .dot.m { fill: #E2409C; }
 
-  /* TECH STACK */
-  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  .stack-col { border: 2px solid var(--amber); background: var(--surf); padding: 1rem 1.1rem; transition: all 0.15s; }
-  .stack-col:hover { background: var(--surf2); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 0 var(--amber-faint); }
-  .stack-col h4 { font-size: 0.74rem; font-weight: 800; color: var(--amber); margin-bottom: 0.7rem; letter-spacing: 0.06em; }
-  .stack-col h4::before { content: '// '; color: var(--amber-faint); }
-  .stack-col ul { list-style: none; }
-  .stack-col li { font-size: 0.82rem; color: var(--amber-dim); margin-bottom: 0.2rem; }
-  .stack-col li::before { content: '- '; color: var(--amber-faint); }
+.code pre { font-family: var(--mono); font-size: 12.8px; line-height: 1.75; color: #C9D1DE; overflow-x: auto; tab-size: 4; padding: 4px 2px 10px; }
+.code .ln { display: inline-block; width: 2.2em; color: #3A4354; user-select: none; }
+.code .c { color: #5F6B7E; } .code .k { color: #F06BB8; } .code .f { color: #5EE0F5; } .code .s { color: #A7E9C3; } .code .vr { color: #E8ECF3; } .code .n { color: #B9A6FF; }
 
-  /* EXECUTION HISTORY (JSON) */
-  .json { font-size: 0.82rem; line-height: 1.85; overflow-x: auto; }
-  .json .key { color: var(--amber); }
-  .json .str { color: var(--green); }
-  .json .pun { color: var(--amber-faint); }
-  .json .ind { padding-left: 2ch; }
-  .json .ind2 { padding-left: 4ch; }
-  .json .ind3 { padding-left: 6ch; }
+/* ---------- Sections ---------- */
+section.block { padding: 112px 0; border-top: 1px solid var(--line); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 48px; }
+.sec-head h2 { font-size: clamp(32px, 3.6vw, 48px); font-weight: 600; letter-spacing: -.03em; line-height: 1.08; text-wrap: balance; }
+.tl h3, .proj h3, .edu h3 { text-wrap: balance; }
+.sec-head p { color: var(--muted); max-width: 42ch; }
 
-  /* PROJECTS */
-  .proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
-  .proj .term-body p { font-size: 0.85rem; color: var(--amber-dim); margin-bottom: 1rem; min-height: 3.6em; }
-  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-  .ptag { font-size: 0.68rem; border: 1px solid var(--amber-faint); color: var(--amber-dim); padding: 0.12rem 0.5rem; }
-  .proj-link { font-size: 0.8rem; font-weight: 700; color: var(--amber); border-bottom: 1px solid var(--amber); padding-bottom: 1px; }
-  .proj-link::after { content: ' ↗'; }
-  .proj-link:hover { background: var(--amber); color: var(--bg); }
+/* About */
+.about { display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 56px; align-items: start; }
+.about .photo { border-radius: 18px; padding: 2px; background: var(--grad); }
+.about .photo img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; }
+.about p { font-size: 20px; line-height: 1.6; max-width: 58ch; }
+.about p + p { margin-top: 16px; font-size: 17px; color: var(--muted); }
+.kv { margin-top: 36px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.kv div { padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.kv dt { font-size: 13px; color: var(--muted); }
+.kv dd { margin-top: 4px; font-weight: 600; }
 
-  /* EDUCATION */
-  .edu-item { border-left: 2px solid var(--amber-faint); padding: 0 0 1.4rem 1.4rem; position: relative; }
-  .edu-item::before { content: '■'; position: absolute; left: -8px; top: 0; color: var(--amber); font-size: 0.7rem; background: var(--bg); }
-  .edu-item .yr { font-size: 0.72rem; color: var(--green); }
-  .edu-item .ti { font-size: 1rem; font-weight: 800; margin: 0.1rem 0 0.2rem; }
-  .edu-item .de { font-size: 0.82rem; color: var(--amber-dim); }
+/* Timeline */
+.tl { list-style: none; position: relative; padding-left: 36px; }
+.tl::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--cyan), var(--magenta)); border-radius: 2px; }
+.tl > li { position: relative; display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 32px; }
+.tl > li + li { margin-top: 56px; }
+.tl > li::before { content: ''; position: absolute; left: -36px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--cyan); }
+.tl > li:last-child::before { border-color: var(--magenta); }
+.tl .when { font-family: var(--mono); font-size: 13.5px; color: var(--muted); padding-top: 3px; }
+.tl h3 { font-size: 24px; font-weight: 600; letter-spacing: -.015em; line-height: 1.25; }
+.tl .org { margin-top: 2px; color: var(--cyan); font-weight: 500; }
+.tl ul { margin-top: 14px; list-style: none; display: grid; gap: 8px; color: var(--muted); max-width: 64ch; }
+.tl ul li { padding-left: 20px; position: relative; }
+.tl ul li::before { content: ''; position: absolute; left: 0; top: .72em; width: 8px; height: 1.5px; background: var(--muted); }
+.chips { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { font-family: var(--mono); font-size: 12.5px; color: #B8C2D3; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
 
-  /* CONTACT */
-  .contact-form { max-width: 640px; }
-  .field { margin-bottom: 1.1rem; }
-  .field label { display: block; font-size: 0.76rem; color: var(--amber-dim); margin-bottom: 0.3rem; }
-  .field label::before { content: '> '; color: var(--amber-faint); }
-  .field input, .field textarea {
-    width: 100%; background: var(--bg); border: 2px solid var(--amber); color: var(--amber);
-    font-family: inherit; font-size: 0.86rem; padding: 0.6rem 0.8rem; resize: vertical;
-  }
-  .field input:focus, .field textarea:focus { outline: none; background: var(--surf); box-shadow: 4px 4px 0 0 var(--amber-faint); }
-  .field input::placeholder, .field textarea::placeholder { color: var(--amber-faint); }
-  .contact-side { font-size: 0.86rem; }
-  .contact-side a { color: var(--amber-dim); border-bottom: 1px solid var(--amber-faint); }
-  .contact-side a:hover { color: var(--amber); }
-  .contact-side div { margin-bottom: 0.6rem; }
+/* Projects */
+.projects { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+.proj { display: flex; flex-direction: column; padding: 28px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); transition: border-color .2s, transform .2s; min-width: 0; }
+.proj:hover { border-color: #33405A; transform: translateY(-2px); }
+.proj.main { grid-column: span 3; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.08fr); gap: 40px; align-items: center; padding: 36px; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, rgba(34,211,238,.55), rgba(226,64,156,.55)) border-box; border: 1px solid transparent; }
+.proj.main:hover { transform: none; }
+.proj .kind { font-size: 14px; color: var(--magenta); font-weight: 500; }
+.proj h3 { margin-top: 6px; font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
+.proj.main h3 { font-size: 34px; }
+.proj p { margin-top: 10px; color: var(--muted); }
+.proj .links { margin-top: auto; padding-top: 22px; display: flex; gap: 18px; flex-wrap: wrap; }
+.proj.main .links { margin-top: 26px; padding-top: 0; }
+.proj .links a { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--cyan); padding-bottom: 2px; }
+.proj .links a:hover { color: var(--cyan); }
+.hub { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+.hub svg { display: block; width: 100%; height: auto; }
+.hub .v { display: none; }
+svg .spoke { stroke: #2A3343; stroke-width: 1.4; }
+svg .sat rect { fill: #121722; stroke: #2A3343; stroke-width: 1.2; }
+svg .sat text { font-family: var(--sans); font-weight: 600; font-size: 13px; fill: #DDE3EC; }
+svg .sat circle { fill: var(--cyan); }
+svg .sat.m circle { fill: var(--magenta); }
 
-  /* FOOTER */
-  footer { border-top: 2px solid var(--amber); margin-top: 3rem; }
-  .foot-in { max-width: 1100px; margin: 0 auto; padding: 1.4rem 5%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--amber-dim); }
-  .foot-in a { color: var(--amber-dim); }
-  .foot-in a:hover { color: var(--amber); }
+/* Full-stack layers */
+.fs { display: grid; grid-template-columns: 56px minmax(0,1fr) 92px 250px; row-gap: 10px; }
+.fs-bracket { grid-column: 1; grid-row: 1 / 6; position: relative; }
+.fs-bracket::before { content: ''; position: absolute; left: 22px; right: 10px; top: 8px; bottom: 8px; border-style: solid; border-width: 2px 0 2px 2px; border-image: linear-gradient(var(--cyan), var(--magenta)) 1; }
+.fs-bracket span { position: absolute; left: 23px; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); background: var(--bg); padding: 2px 10px; white-space: nowrap; }
+.layer { grid-column: 2; display: grid; grid-template-columns: 210px minmax(0,1fr); align-items: center; gap: 18px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 12px; }
+.layer .ln { font-weight: 600; font-size: 18px; line-height: 1.25; }
+.layer .ln small { display: block; margin-top: 2px; font-family: var(--mono); font-weight: 400; font-size: 12px; color: var(--muted); }
+.layer .chips { margin-top: 0; }
+.layer .chips span { background: var(--raise); }
+.fs-link { grid-column: 3; position: relative; }
+.fs-link::before { content: ''; position: absolute; left: 6px; right: 6px; top: 50%; border-top: 1.5px dashed #2EB8D6; }
+.fs-link::after { content: ''; position: absolute; right: 2px; top: calc(50% - 4px); border: 4px solid transparent; border-left: 6px solid #2EB8D6; }
+.fs-link span { position: absolute; left: 50%; top: calc(50% - 24px); transform: translateX(-50%); font-family: var(--mono); font-size: 11px; color: #5EE0F5; white-space: nowrap; }
+.ext { grid-column: 4; display: flex; flex-direction: column; justify-content: center; padding: 12px 18px; border-radius: 12px; border: 1px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box; }
+.ext b { font-weight: 600; font-size: 18px; }
+.ext span { font-size: 14px; color: var(--muted); }
+.ext-label { display: none; }
+.fs .r2 { grid-row: 2; } .fs .r3 { grid-row: 3; }
 
-  /* RESPONSIVE */
-  @media (max-width: 860px) {
-    .stack-grid { grid-template-columns: 1fr 1fr; }
-    .proj-grid { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; }
-    .photo-frame { max-width: 220px; }
-    .nav-links { display: none; }
-  }
-  @media (max-width: 480px) {
-    .stack-grid { grid-template-columns: 1fr; }
-    .hero-btns { flex-direction: column; align-items: flex-start; }
-  }
+/* Education */
+.edu { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+.edu li { padding: 26px; border: 1px solid var(--line); border-radius: 16px; }
+.edu .when { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.edu h3 { margin-top: 8px; font-size: 19px; font-weight: 600; line-height: 1.3; }
+.edu p { margin-top: 8px; color: var(--muted); font-size: 15.5px; }
+
+/* Contact */
+.contact .big { display: inline-block; font-size: clamp(26px, 5vw, 64px); font-weight: 600; letter-spacing: -.035em; line-height: 1.1; text-decoration: none; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; word-break: break-all; }
+.contact .big:hover { filter: brightness(1.15); }
+.contact-grid { margin-top: 56px; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 56px; }
+.links-list { list-style: none; }
+.links-list li { display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.links-list span { color: var(--muted); }
+.links-list a { text-decoration: none; font-weight: 500; text-align: right; }
+.links-list a:hover { color: var(--cyan); }
+form .field + .field { margin-top: 16px; }
+form label { display: block; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+form input, form textarea { width: 100%; font: 400 16px var(--sans); color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; }
+form textarea { min-height: 140px; resize: vertical; }
+form input:focus, form textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,211,238,.18); }
+form [aria-invalid="true"] { border-color: #FF8FA3; }
+form .btn { margin-top: 20px; }
+.form-status { margin-top: 12px; font-size: 15px; min-height: 1.5em; color: var(--muted); }
+.form-status.ok { color: var(--green); } .form-status.err { color: #FF8FA3; }
+
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-top: 28px; padding-bottom: 36px; flex-wrap: wrap; }
+footer a { text-decoration: none; margin-left: 20px; }
+footer a:hover { color: var(--text); }
+
+
+/* ---------- Esquema interactivo ---------- */
+.viz .node[data-node] { transition: opacity .25s; outline: none; }
+.viz .node[data-node] { cursor: pointer; }
+.viz .node[data-node]:hover rect { stroke: #4A5568; }
+.viz .node[data-node]:focus-visible rect { stroke: var(--cyan); stroke-width: 2.2; }
+.viz .node.sel rect { stroke: var(--cyan); stroke-width: 2; fill: #172033; }
+.viz .node.dim { opacity: .3; }
+.viz .wire, .viz .tag { transition: opacity .25s; }
+.viz.has-sel .wire { opacity: .12; }
+.viz.has-sel .wire.on { opacity: 1; animation: flow 1s linear infinite; }
+.viz.has-sel .tag { opacity: .22; }
+.viz.has-sel .tag.on { opacity: 1; }
+.viz.has-sel .dot.off { visibility: hidden; }
+.viz.paused .wire.on { animation-play-state: paused; }
+@keyframes flow { to { stroke-dashoffset: -18; } }
+.viz figcaption { min-height: 112px; }
+.cap-hint { display: block; margin-top: 8px; font-size: 13.5px; color: #5EE0F5; }
+.cap-info b { color: var(--text); font-weight: 600; }
+.cap-info code { display: block; margin-top: 6px; font-family: var(--mono); font-size: 12.5px; color: #5EE0F5; }
+.cap-back { display: inline-block; margin-top: 10px; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: 500 13.5px var(--sans); cursor: pointer; }
+.cap-back:hover { border-color: var(--cyan); }
+
+/* ---------- Luz que sigue al ratón ---------- */
+.hero .spot { position: absolute; inset: 0; z-index: 0; pointer-events: none; --x: 30%; --y: 42%; }
+.hero .spot::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.085) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.085) 1px, transparent 1px); background-size: 32px 32px; -webkit-mask-image: radial-gradient(320px circle at var(--x) var(--y), #000, transparent 72%); mask-image: radial-gradient(320px circle at var(--x) var(--y), #000, transparent 72%); }
+.hero .spot::after { content: ''; position: absolute; inset: 0; background: radial-gradient(560px circle at var(--x) var(--y), rgba(124,140,240,.21), rgba(226,64,156,.08) 45%, transparent 70%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .viz.has-sel .wire.on { animation: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1060px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 52px; }
+  .nav { display: none; }
+  .projects { grid-template-columns: 1fr 1fr; }
+  .proj.main { grid-column: span 2; grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .tl > li { grid-template-columns: 1fr; gap: 6px; }
+  .fs { grid-template-columns: 44px minmax(0,1fr) 72px 200px; }
+  .layer { grid-template-columns: 1fr; gap: 10px; }
+}
+@media (max-width: 700px) {
+  .fs { grid-template-columns: 32px minmax(0,1fr); }
+  .fs-bracket::before { left: 14px; right: 4px; }
+  .fs-bracket span { left: 15px; font-size: 12px; }
+  .fs-link { display: none; }
+  .ext-label { display: block; grid-column: 2; margin-top: 18px; font-family: var(--mono); font-size: 12.5px; color: #5EE0F5; }
+  .fs .ext { grid-column: 2; grid-row: auto; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .wrap { padding: 0 16px; }
+  .top .wrap { gap: 10px; }
+  .top .btn-sm span { display: none; }
+  .hero { padding: 48px 0 72px; }
+  .hello { margin-top: 24px; font-size: 17px; }
+  .hero .lead { font-size: 17px; }
+  .viz .h { display: none; }
+  .viz .v { display: block; }
+  .viz-where { display: none; }
+  .viz-pause { margin-left: auto; }
+  .viz-panel { padding: 12px 10px 4px; }
+  .code pre { font-size: 11.5px; }
+  section.block { padding: 72px 0; }
+  .sec-head { flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .about { grid-template-columns: 1fr; gap: 28px; }
+  .about .photo { width: 150px; }
+  .about p { font-size: 18px; }
+  .kv { grid-template-columns: 1fr; }
+  .projects { grid-template-columns: 1fr; }
+  .proj.main { grid-column: auto; padding: 22px; }
+  .proj.main h3 { font-size: 28px; }
+  .hub { padding: 10px 8px; }
+  .hub .h { display: none; }
+  .hub .v { display: block; }
+  .layer { padding: 14px 16px; }
+  .edu { grid-template-columns: 1fr; }
+  .links-list li { flex-direction: column; gap: 2px; }
+  .links-list a { text-align: left; }
+  footer a { margin: 0 20px 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+  .avail i::after { animation: none; }
+  svg .dot { display: none; }
+}
 </style>
 </head>
 <body>
-  <!-- NAV -->
-  <nav>
-    <div class="nav-in">
-      <a href="#hero" class="logo">D.NAVARRO_</a>
-      <ul class="nav-links">
-        <li><a href="#about" data-es="sobre_mi" data-en="about">sobre_mi</a></li>
-        <li><a href="#stack" data-es="stack" data-en="stack">stack</a></li>
-        <li><a href="#exp" data-es="experiencia" data-en="experience">experiencia</a></li>
-        <li><a href="#proj" data-es="proyectos" data-en="projects">proyectos</a></li>
-        <li><a href="#contact" data-es="contacto" data-en="contact">contacto</a></li>
+<a class="skip" href="#contenido" data-en="Skip to content">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Daniel Navarro <span>/ dev</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#sobre-mi" data-en="About">Sobre mí</a>
+      <a href="#experiencia" data-en="Experience">Experiencia</a>
+      <a href="#proyectos" data-en="Projects">Proyectos</a>
+      <a href="#stack">Stack</a>
+      <a href="#contacto" data-en="Contact">Contacto</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" id="b-es" aria-pressed="true">ES</button>
+      <button type="button" id="b-en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-ghost btn-sm" href="CV_Daniel_Navarro.pdf" download aria-label="Descargar CV" data-en-aria="Download CV">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v8M4.5 6.8 8 10.3l3.5-3.5M3 13.5h10"/></svg>
+      <span>CV</span>
+    </a>
+  </div>
+</header>
+
+<main id="contenido" tabindex="-1">
+  <section class="hero" id="inicio">
+    <div class="spot" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <span class="avail"><i aria-hidden="true"></i><span data-en="Available in Madrid or remote">Disponible en Madrid o en remoto</span></span>
+        <p class="hello"><span class="ring"><img src="foto.jpg" alt="" width="42" height="42"></span><span data-en="Hi, I'm Daniel Navarro">Hola, soy Daniel Navarro</span></p>
+        <h1 translate="no">Full-Stack<br>Developer</h1>
+        <p class="lead" data-en="I work with &lt;strong&gt;PHP, JavaScript and WordPress&lt;/strong&gt;, and I connect online stores to their ERP and CRM through REST APIs so orders, invoices and customers move on their own.">Programo con <strong>PHP, JavaScript y WordPress</strong>, y conecto tiendas online con su ERP y su CRM mediante APIs REST para que pedidos, facturas y clientes se muevan solos.</p>
+        <div class="actions">
+          <a class="btn btn-grad" href="#proyectos" data-en="See Projects">Ver proyectos</a>
+          <a class="btn btn-ghost" href="CV_Daniel_Navarro.pdf" download data-en="Download CV">Descargar CV</a>
+        </div>
+      </div>
+
+      <figure class="viz">
+        <div class="viz-top">
+          <div class="viz-tabs" role="tablist" aria-label="Integración">
+            <button type="button" role="tab" id="t-diagram" aria-selected="true" aria-controls="p-diagram" data-en="Diagram">Esquema</button>
+            <button type="button" role="tab" id="t-code" aria-selected="false" aria-controls="p-code" tabindex="-1" data-en="Code">Código</button>
+          </div>
+          <span class="viz-where" data-en="Internship · Essenzial Green">Prácticas · Essenzial Green</span>
+          <button type="button" class="viz-pause" id="viz-pause" aria-pressed="false" aria-label="Pausar animación" data-en-aria="Pause animation"><svg class="pause" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg><svg class="play" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M4 2.5v9l7.5-4.5z"/></svg></button>
+        </div>
+
+        <div class="viz-panel" id="p-diagram" role="tabpanel" aria-labelledby="t-diagram">
+          <svg class="h" viewBox="0 0 520 330" role="group" aria-label="WooCommerce y WordPress envían pedidos, usuarios y cursos a unos plugins PHP, que crean facturas recurrentes en Dolibarr y contactos y oportunidades en EspoCRM" data-en-aria="WooCommerce and WordPress send orders, users and courses to custom PHP plugins, which create recurring invoices in Dolibarr and contacts and deals in EspoCRM">
+            <defs>
+              <linearGradient id="gEdge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#E2409C"/></linearGradient>
+              <radialGradient id="gGlow"><stop offset="0" stop-color="#7C8CF0" stop-opacity=".45"/><stop offset="1" stop-color="#7C8CF0" stop-opacity="0"/></radialGradient>
+            </defs>
+            <circle cx="282" cy="165" r="120" fill="url(#gGlow)"/>
+            <path id="w1" data-w="w1" class="wire" d="M150 78 C 200 78, 200 165, 222 165"/>
+            <path id="w2" data-w="w2" class="wire" d="M150 252 C 200 252, 200 165, 222 165"/>
+            <path id="w3" data-w="w3" class="wire m" d="M342 165 C 362 165, 362 78, 382 78"/>
+            <path id="w4" data-w="w4" class="wire m" d="M342 165 C 362 165, 362 252, 382 252"/>
+
+            <text data-w="w1" class="tag" x="158" y="58" data-en-svg="order">pedido</text>
+            <text data-w="w2" class="tag" x="140" y="294" data-en-svg="user · course">usuario · curso</text>
+            <text data-w="w3" class="tag m" x="352" y="40" data-en-svg="recurring invoice">factura recurrente</text>
+            <text data-w="w4" class="tag m" x="352" y="302" data-en-svg="users &amp; certificates">usuarios y certificados</text>
+
+            <g class="node" data-node="woo" tabindex="0" role="button" aria-pressed="false" aria-label="WooCommerce: ver qué hace" data-en-aria="WooCommerce: see what it does"><rect x="10" y="48" width="140" height="60" rx="10"/><text class="t" x="24" y="75">WooCommerce</text><text class="s" x="24" y="94" data-en-svg="orders &amp; payments">pedidos y pagos</text></g>
+            <g class="node" data-node="wp" tabindex="0" role="button" aria-pressed="false" aria-label="WordPress: ver qué hace" data-en-aria="WordPress: see what it does"><rect x="10" y="222" width="140" height="60" rx="10"/><text class="t" x="24" y="249">WordPress</text><text class="s" x="24" y="268">Sensei LMS</text></g>
+            <g class="node core" data-node="core" tabindex="0" role="button" aria-pressed="false" aria-label="Plugins PHP: ver qué hacen" data-en-aria="PHP plugins: see what they do"><rect x="222" y="124" width="120" height="82" rx="12"/><text class="t" x="236" y="153" data-en-svg="PHP plugins">Plugins PHP</text><text class="s" x="236" y="174" data-en-svg="REST API">API REST</text><text class="s" x="236" y="191">WP-Cron</text></g>
+            <g class="node" data-node="doli" tabindex="0" role="button" aria-pressed="false" aria-label="Dolibarr: ver qué hace" data-en-aria="Dolibarr: see what it does"><rect x="382" y="48" width="128" height="60" rx="10"/><text class="t" x="396" y="75">Dolibarr</text><text class="s" x="396" y="94" data-en-svg="ERP · invoicing">ERP · facturación</text></g>
+            <g class="node" data-node="espo" tabindex="0" role="button" aria-pressed="false" aria-label="EspoCRM: ver qué hace" data-en-aria="EspoCRM: see what it does"><rect x="382" y="222" width="128" height="60" rx="10"/><text class="t" x="396" y="249">EspoCRM</text><text class="s" x="396" y="268" data-en-svg="CRM · BPM flows">CRM · flujos BPM</text></g>
+
+            <circle data-w="w1" class="dot" r="4" opacity="0"><set attributeName="opacity" to="1" begin="0s"/><animateMotion dur="2.4s" begin="0s" repeatCount="indefinite"><mpath href="#w1"/></animateMotion></circle>
+            <circle data-w="w2" class="dot" r="4" opacity="0"><set attributeName="opacity" to="1" begin="1.2s"/><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite"><mpath href="#w2"/></animateMotion></circle>
+            <circle data-w="w3" class="dot m" r="4" opacity="0"><set attributeName="opacity" to="1" begin=".8s"/><animateMotion dur="2.4s" begin=".8s" repeatCount="indefinite"><mpath href="#w3"/></animateMotion></circle>
+            <circle data-w="w4" class="dot m" r="4" opacity="0"><set attributeName="opacity" to="1" begin="2s"/><animateMotion dur="2.4s" begin="2s" repeatCount="indefinite"><mpath href="#w4"/></animateMotion></circle>
+          </svg>
+
+          <svg class="v" viewBox="0 0 340 450" role="group" aria-label="WooCommerce y WordPress envían pedidos, usuarios y cursos a unos plugins PHP, que crean facturas recurrentes en Dolibarr y contactos y oportunidades en EspoCRM" data-en-aria="WooCommerce and WordPress send orders, users and courses to custom PHP plugins, which create recurring invoices in Dolibarr and contacts and deals in EspoCRM">
+            <defs>
+              <linearGradient id="gEdgeV" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#E2409C"/></linearGradient>
+              <radialGradient id="gGlowV"><stop offset="0" stop-color="#7C8CF0" stop-opacity=".45"/><stop offset="1" stop-color="#7C8CF0" stop-opacity="0"/></radialGradient>
+            </defs>
+            <circle cx="170" cy="225" r="110" fill="url(#gGlowV)"/>
+            <path id="v1" data-w="w1" class="wire" d="M85 74 V122 H150 V180"/>
+            <path id="v2" data-w="w2" class="wire" d="M255 74 V122 H190 V180"/>
+            <path id="v3" data-w="w3" class="wire m" d="M150 270 V328 H85 V376"/>
+            <path id="v4" data-w="w4" class="wire m" d="M190 270 V328 H255 V376"/>
+            <text data-w="w1" class="tag" x="93" y="108" font-size="12" data-en-svg="order">pedido</text>
+            <text data-w="w2" class="tag" x="247" y="108" font-size="12" text-anchor="end" data-en-svg="user · course">usuario · curso</text>
+            <text data-w="w3" class="tag m" x="93" y="350" font-size="12" data-en-svg="invoice">factura</text>
+            <text data-w="w4" class="tag m" x="247" y="350" font-size="12" text-anchor="end" data-en-svg="users">usuarios</text>
+            <g class="node" data-node="woo" tabindex="0" role="button" aria-pressed="false" aria-label="WooCommerce: ver qué hace" data-en-aria="WooCommerce: see what it does"><rect x="8" y="10" width="154" height="64" rx="10"/><text class="t" x="20" y="38" font-size="16">WooCommerce</text><text class="s" x="20" y="58" font-size="12" data-en-svg="orders &amp; payments">pedidos y pagos</text></g>
+            <g class="node" data-node="wp" tabindex="0" role="button" aria-pressed="false" aria-label="WordPress: ver qué hace" data-en-aria="WordPress: see what it does"><rect x="178" y="10" width="154" height="64" rx="10"/><text class="t" x="190" y="38" font-size="16">WordPress</text><text class="s" x="190" y="58" font-size="12">Sensei LMS</text></g>
+            <g class="node core" data-node="core" tabindex="0" role="button" aria-pressed="false" aria-label="Plugins PHP: ver qué hacen" data-en-aria="PHP plugins: see what they do"><rect x="80" y="180" width="180" height="90" rx="12" style="stroke:url(#gEdgeV)"/><text class="t" x="96" y="212" font-size="18" data-en-svg="PHP plugins">Plugins PHP</text><text class="s" x="96" y="236" font-size="12.5" data-en-svg="REST API">API REST</text><text class="s" x="96" y="255" font-size="12.5">WP-Cron</text></g>
+            <g class="node" data-node="doli" tabindex="0" role="button" aria-pressed="false" aria-label="Dolibarr: ver qué hace" data-en-aria="Dolibarr: see what it does"><rect x="8" y="376" width="154" height="64" rx="10"/><text class="t" x="20" y="404" font-size="16">Dolibarr</text><text class="s" x="20" y="424" font-size="12" data-en-svg="ERP · invoicing">ERP · facturación</text></g>
+            <g class="node" data-node="espo" tabindex="0" role="button" aria-pressed="false" aria-label="EspoCRM: ver qué hace" data-en-aria="EspoCRM: see what it does"><rect x="178" y="376" width="154" height="64" rx="10"/><text class="t" x="190" y="404" font-size="16">EspoCRM</text><text class="s" x="190" y="424" font-size="12" data-en-svg="CRM · BPM flows">CRM · flujos BPM</text></g>
+            <circle data-w="w1" class="dot" r="4" opacity="0"><set attributeName="opacity" to="1" begin="0s"/><animateMotion dur="2.4s" begin="0s" repeatCount="indefinite"><mpath href="#v1"/></animateMotion></circle>
+            <circle data-w="w2" class="dot" r="4" opacity="0"><set attributeName="opacity" to="1" begin="1.2s"/><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite"><mpath href="#v2"/></animateMotion></circle>
+            <circle data-w="w3" class="dot m" r="4" opacity="0"><set attributeName="opacity" to="1" begin=".8s"/><animateMotion dur="2.4s" begin=".8s" repeatCount="indefinite"><mpath href="#v3"/></animateMotion></circle>
+            <circle data-w="w4" class="dot m" r="4" opacity="0"><set attributeName="opacity" to="1" begin="2s"/><animateMotion dur="2.4s" begin="2s" repeatCount="indefinite"><mpath href="#v4"/></animateMotion></circle>
+          </svg>
+        </div>
+
+        <div class="viz-panel code" id="p-code" role="tabpanel" aria-labelledby="t-code" hidden>
+<pre translate="no"><span class="ln">1</span><span class="c">// Pedido completado → factura en Dolibarr</span>
+<span class="ln">2</span><span class="f">add_action</span>(<span class="s">'woocommerce_order_status_completed'</span>, <span class="s">'facturar'</span>);
+<span class="ln">3</span>
+<span class="ln">4</span><span class="k">function</span> <span class="f">facturar</span>(<span class="vr">$id</span>) {
+<span class="ln">5</span>    <span class="vr">$order</span> = <span class="f">wc_get_order</span>(<span class="vr">$id</span>);
+<span class="ln">6</span>    <span class="vr">$url</span>   = <span class="n">DOLIBARR_URL</span> . <span class="s">'/api/index.php/invoices'</span>;
+<span class="ln">7</span>
+<span class="ln">8</span>    <span class="vr">$res</span> = <span class="f">wp_remote_post</span>(<span class="vr">$url</span>, [
+<span class="ln">9</span>        <span class="s">'headers'</span> =&gt; [<span class="s">'DOLAPIKEY'</span> =&gt; <span class="n">DOLIBARR_KEY</span>],
+<span class="ln">10</span>        <span class="s">'body'</span>    =&gt; <span class="f">wp_json_encode</span>(<span class="f">map_invoice</span>(<span class="vr">$order</span>)),
+<span class="ln">11</span>    ]);
+<span class="ln">12</span>
+<span class="ln">13</span>    <span class="k">if</span> (<span class="f">is_wp_error</span>(<span class="vr">$res</span>)) {
+<span class="ln">14</span>        <span class="f">log_sync_error</span>(<span class="vr">$id</span>, <span class="vr">$res</span>);
+<span class="ln">15</span>    }
+<span class="ln">16</span>}</pre>
+        </div>
+
+        <figcaption id="viz-cap" aria-live="polite">
+          <span class="cap-default" id="cap-default"><span data-en="&lt;b&gt;What I built during my internship at Essenzial Green.&lt;/b&gt; Orders become recurring invoices in the ERP, and users and courses sync to the CRM on their own."><b>Lo que construí en mis prácticas en Essenzial Green.</b> Los pedidos se convierten en facturas recurrentes en el ERP, y los usuarios y cursos se sincronizan solos con el CRM.</span><span class="cap-hint" data-en="Tap any box in the diagram to see what it does.">Pulsa cualquier caja del esquema para ver qué hace.</span></span>
+          <span class="cap-info" id="cap-info" hidden><b id="cap-t"></b> <span id="cap-d"></span><code id="cap-x"></code><button type="button" class="cap-back" id="cap-back" data-en="See the whole diagram">Ver el esquema completo</button></span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="sobre-mi">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-en="About Me">Sobre mí</h2></div>
+      <div class="about">
+        <div class="photo"><img src="foto.jpg" alt="Daniel Navarro" width="240" height="240" loading="lazy" decoding="async"></div>
+        <div>
+          <p data-en="I recently finished the Higher Degree in Web Application Development, after an earlier one in Multiplatform Development. I enjoy taking a problem from start to finish: understanding what the business needs, building it and leaving it running in production.">Acabo de terminar el Grado Superior en Desarrollo de Aplicaciones Web, después de uno anterior en Multiplataforma. Me gusta llevar un problema de principio a fin: entender qué necesita el negocio, construirlo y dejarlo funcionando en producción.</p>
+          <p data-en="I learn fast and on my own, and I'm especially interested in cybersecurity as my next area to grow in.">Aprendo rápido y por mi cuenta, y me interesa la ciberseguridad como siguiente paso para especializarme.</p>
+          <dl class="kv">
+            <div><dt data-en="Based in">Ubicación</dt><dd data-en="Madrid, Spain">Madrid, España</dd></div>
+            <div><dt data-en="Looking for">Busco</dt><dd data-en="Full-time role">Jornada completa</dd></div>
+            <div><dt data-en="Languages">Idiomas</dt><dd data-en="Spanish, advanced English">Español, inglés avanzado</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="experiencia">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-en="Experience">Experiencia</h2><p data-en="Two company internships, the latest integrating systems in production.">Dos prácticas en empresa, la última integrando sistemas en producción.</p></div>
+      <ol class="tl" reversed>
+        <li>
+          <p class="when" data-en="Jan – Apr 2026">ene. – abr. 2026</p>
+          <div>
+            <h3 data-en="Web developer, WordPress integrations">Desarrollador web de integraciones WordPress</h3>
+            <p class="org" data-en="Essenzial Green · Internship">Essenzial Green · Prácticas (FCT)</p>
+            <ul>
+              <li data-en="Built custom WordPress plugins in PHP from scratch.">Desarrollé plugins de WordPress a medida en PHP, desde cero.</li>
+              <li data-en="Integrated WooCommerce with Dolibarr (ERP) through its REST API to automate recurring invoicing with WP-Cron.">Integré WooCommerce con Dolibarr (ERP) mediante su API REST para automatizar la facturación recurrente con WP-Cron.</li>
+              <li data-en="Synced WordPress and Sensei LMS users, courses and certificates with EspoCRM, including BPM automations.">Sincronicé usuarios, cursos y certificados de WordPress y Sensei LMS con EspoCRM, incluidas automatizaciones BPM.</li>
+              <li data-en="Worked across separate development and production environments.">Trabajé con entornos separados de desarrollo y producción.</li>
+            </ul>
+            <div class="chips" translate="no"><span>PHP</span><span>WordPress</span><span>WooCommerce</span><span data-en="REST API">API REST</span><span>Dolibarr</span><span>EspoCRM</span></div>
+          </div>
+        </li>
+        <li>
+          <p class="when" data-en="Mar – Jun 2023">mar. – jun. 2023</p>
+          <div>
+            <h3 data-en="Web designer and developer">Diseñador web y programador</h3>
+            <p class="org" data-en="500Cosmetic · Internship">500Cosmetic · Prácticas (FCT)</p>
+            <ul>
+              <li data-en="Designed and built product pages and blogs in several languages.">Diseño y maquetación de páginas de producto y blogs en varios idiomas.</li>
+              <li data-en="Developed internal applications and maintained existing features.">Desarrollo de aplicaciones internas y mantenimiento de funcionalidades.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="proyectos">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-en="Projects">Proyectos</h2><p data-en="What I've built on my own and during my degree.">Lo que he construido por mi cuenta y en el grado.</p></div>
+      <div class="projects">
+        <article class="proj main">
+          <div>
+            <p class="kind" data-en="Final degree project">Trabajo Fin de Grado</p>
+            <h3>Alcántara Barbershop</h3>
+            <p data-en="A complete web system for a barbershop: online booking, a store, customer management and an admin panel, with WordPress plugins written from scratch.">Sistema web completo para una barbería: reservas online, tienda, gestión de clientes y panel de administración, con plugins de WordPress hechos desde cero.</p>
+            <div class="chips" translate="no"><span>WordPress</span><span>PHP</span><span>MySQL</span><span>WooCommerce</span></div>
+            <div class="links">
+              <a href="https://tfg-danielnavarro.infinityfreeapp.com/wordpress/" target="_blank" rel="noopener" data-en="View Live Site">Ver la web</a>
+              <a href="https://github.com/DanielNavarroFernandez/TFGDawDanielNavarro" target="_blank" rel="noopener" data-en="View Code">Ver código</a>
+            </div>
+          </div>
+          <div class="hub">
+            <svg class="h" viewBox="0 0 520 340" role="img" aria-label="Módulos del TFG: reservas online, tienda WooCommerce, clientes y roles, códigos QR y panel de administración, todos sobre WordPress" data-en-aria="Final project modules: online booking, WooCommerce store, customers and roles, QR codes and admin panel, all on WordPress">
+              <defs><linearGradient id="gHub" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#E2409C"/></linearGradient></defs>
+              <line class="spoke" x1="260" y1="153" x2="92" y2="42"/>
+              <line class="spoke" x1="260" y1="153" x2="428" y2="42"/>
+              <line class="spoke" x1="260" y1="153" x2="92" y2="258"/>
+              <line class="spoke" x1="260" y1="153" x2="428" y2="258"/>
+              <line class="spoke" x1="260" y1="153" x2="260" y2="304"/>
+              <g class="node core"><rect x="170" y="118" width="180" height="70" rx="12" style="stroke:url(#gHub)"/><text class="t" x="260" y="149" text-anchor="middle">Alcántara Barbershop</text><text class="s" x="260" y="170" text-anchor="middle" data-en-svg="WordPress + custom plugins">WordPress + plugins propios</text></g>
+              <g class="sat"><rect x="4" y="20" width="176" height="44" rx="10"/><circle cx="22" cy="42" r="4"/><text x="34" y="47" data-en-svg="Online booking">Reservas online</text></g>
+              <g class="sat m"><rect x="340" y="20" width="176" height="44" rx="10"/><circle cx="358" cy="42" r="4"/><text x="370" y="47" data-en-svg="WooCommerce store">Tienda WooCommerce</text></g>
+              <g class="sat"><rect x="4" y="236" width="176" height="44" rx="10"/><circle cx="22" cy="258" r="4"/><text x="34" y="263" data-en-svg="Customers &amp; roles">Clientes y roles</text></g>
+              <g class="sat m"><rect x="340" y="236" width="176" height="44" rx="10"/><circle cx="358" cy="258" r="4"/><text x="370" y="263" data-en-svg="QR codes">Códigos QR</text></g>
+              <g class="sat"><rect x="172" y="282" width="176" height="44" rx="10"/><circle cx="190" cy="304" r="4"/><text x="202" y="309" data-en-svg="Admin panel">Panel de admin</text></g>
+            </svg>
+            <svg class="v" viewBox="0 0 340 374" role="img" aria-label="Módulos del TFG: reservas online, tienda WooCommerce, clientes y roles, códigos QR y panel de administración, todos sobre WordPress" data-en-aria="Final project modules: online booking, WooCommerce store, customers and roles, QR codes and admin panel, all on WordPress">
+              <defs><linearGradient id="gHubV" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#E2409C"/></linearGradient></defs>
+              <line class="spoke" x1="30" y1="74" x2="30" y2="342"/>
+              <line class="spoke" x1="30" y1="118" x2="56" y2="118"/>
+              <line class="spoke" x1="30" y1="174" x2="56" y2="174"/>
+              <line class="spoke" x1="30" y1="230" x2="56" y2="230"/>
+              <line class="spoke" x1="30" y1="286" x2="56" y2="286"/>
+              <line class="spoke" x1="30" y1="342" x2="56" y2="342"/>
+              <g class="node core"><rect x="10" y="10" width="320" height="64" rx="12" style="stroke:url(#gHubV)"/><text class="t" x="28" y="38" font-size="17">Alcántara Barbershop</text><text class="s" x="28" y="59" font-size="12.5" data-en-svg="WordPress + custom plugins">WordPress + plugins propios</text></g>
+              <g class="sat"><rect x="56" y="96" width="274" height="44" rx="10"/><circle cx="76" cy="118" r="4"/><text x="90" y="123" style="font-size:15px" data-en-svg="Online booking">Reservas online</text></g>
+              <g class="sat m"><rect x="56" y="152" width="274" height="44" rx="10"/><circle cx="76" cy="174" r="4"/><text x="90" y="179" style="font-size:15px" data-en-svg="WooCommerce store">Tienda WooCommerce</text></g>
+              <g class="sat"><rect x="56" y="208" width="274" height="44" rx="10"/><circle cx="76" cy="230" r="4"/><text x="90" y="235" style="font-size:15px" data-en-svg="Customers &amp; roles">Clientes y roles</text></g>
+              <g class="sat m"><rect x="56" y="264" width="274" height="44" rx="10"/><circle cx="76" cy="286" r="4"/><text x="90" y="291" style="font-size:15px" data-en-svg="QR codes">Códigos QR</text></g>
+              <g class="sat"><rect x="56" y="320" width="274" height="44" rx="10"/><circle cx="76" cy="342" r="4"/><text x="90" y="347" style="font-size:15px" data-en-svg="Admin panel">Panel de admin</text></g>
+            </svg>
+          </div>
+        </article>
+        <article class="proj">
+          <p class="kind">PWA</p>
+          <h3>PrintCalc</h3>
+          <p data-en="Works out the material, time and price of each 3D print. It installs on your phone and works offline.">Calcula el material, el tiempo y el precio de cada pieza impresa en 3D. Se instala en el móvil y funciona sin conexión.</p>
+          <div class="chips" translate="no"><span>JavaScript</span><span>PWA</span><span>CSS</span></div>
+          <div class="links"><a href="https://printcalc-danielnavarro.netlify.app" target="_blank" rel="noopener" data-en="Open the App">Abrir la app</a></div>
+        </article>
+        <article class="proj">
+          <p class="kind" data-en="Discord bot">Bot de Discord</p>
+          <h3>HayDay Bot</h3>
+          <p data-en="Buying and selling for Hay Day with a visual panel of menus and buttons, a cart per user and over 400 bilingual products.">Compra y venta de Hay Day con panel visual de menús y botones, carrito por usuario y más de 400 productos bilingües.</p>
+          <div class="chips" translate="no"><span>Node.js</span><span>Discord.js</span></div>
+        </article>
+        <article class="proj">
+          <p class="kind">GitHub</p>
+          <h3 data-en="More Repositories">Más repositorios</h3>
+          <p data-en="Plugins, experiments and prototypes I keep building.">Plugins, experimentos y prototipos que sigo construyendo.</p>
+          <div class="links"><a href="https://github.com/DanielNavarroFernandez" target="_blank" rel="noopener" data-en="Go to My GitHub">Ir a mi GitHub</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="stack">
+    <div class="wrap">
+      <div class="sec-head"><h2>Stack</h2><p data-en="From the interface to the database, connected to the rest of the business.">De la interfaz a la base de datos, y conectado con el resto de la empresa.</p></div>
+      <div class="fs">
+        <div class="fs-bracket" aria-hidden="true"><span>full-stack</span></div>
+        <div class="layer" style="--c:#22D3EE; grid-row:1"><p class="ln"><span data-en="Frontend">Interfaz</span><small data-en="what users see">lo que ve el usuario</small></p><div class="chips" translate="no"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>jQuery</span><span>Bootstrap</span><span>AJAX</span></div></div>
+        <div class="layer" style="--c:#4FB2F2; grid-row:2"><p class="ln"><span data-en="CMS &amp; e-commerce">CMS y e-commerce</span><small data-en="content and store">contenido y tienda</small></p><div class="chips" translate="no"><span>WordPress</span><span>WooCommerce</span><span>Sensei LMS</span></div></div>
+        <div class="layer" style="--c:#7C8CF0; grid-row:3"><p class="ln"><span>Backend</span><small data-en="the logic">la lógica</small></p><div class="chips" translate="no"><span>PHP</span><span>Java</span><span>Node.js</span></div></div>
+        <div class="layer" style="--c:#B064C4; grid-row:4"><p class="ln"><span data-en="Data">Datos</span><small data-en="where everything is stored">dónde se guarda todo</small></p><div class="chips" translate="no"><span>MySQL</span><span>SQL</span></div></div>
+        <div class="layer" style="--c:#E2409C; grid-row:5"><p class="ln"><span data-en="Tooling">Herramientas</span><small data-en="code, servers, deployment">código, servidores, despliegue</small></p><div class="chips" translate="no"><span>Git</span><span>GitHub</span><span>Apache</span><span>XAMPP</span><span>Linux</span><span>VirtualBox</span><span data-en="AWS (basics)">AWS (nociones)</span></div></div>
+        <p class="ext-label" data-en="Connected through REST APIs with:">Conectado mediante API REST con:</p>
+        <div class="fs-link r2" aria-hidden="true"><span data-en="REST API">API REST</span></div>
+        <div class="fs-link r3" aria-hidden="true"><span data-en="REST API">API REST</span></div>
+        <div class="ext r2"><b>Dolibarr</b><span data-en="ERP · invoicing">ERP · facturación</span></div>
+        <div class="ext r3"><b>EspoCRM</b><span data-en="CRM · customers">CRM · clientes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="formacion">
+    <div class="wrap">
+      <div class="sec-head"><h2 data-en="Education">Formación</h2></div>
+      <ul class="edu">
+        <li><p class="when">2025 – 2026</p><h3 data-en="Higher Degree in Web Application Development (DAW)">Grado Superior en Desarrollo de Aplicaciones Web (DAW)</h3><p data-en="IES Arboleda, Madrid. Final project: a management system for a real barbershop.">IES Arboleda, Madrid. TFG: sistema de gestión para una barbería real.</p></li>
+        <li><p class="when">2021 – 2023</p><h3 data-en="Higher Degree in Multiplatform Application Development (DAM)">Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)</h3><p data-en="Object-oriented programming, databases and Java.">Programación orientada a objetos, bases de datos y Java.</p></li>
+        <li><p class="when" data-en="Completed">Completado</p><h3 data-en="Baccalaureate">Bachillerato</h3></li>
       </ul>
-      <div class="nav-tools">
-        <div class="lang">
-          <button id="b-es" class="active" onclick="setLang('es')">ES</button>
-          <button id="b-en" onclick="setLang('en')">EN</button>
-        </div>
-        <a href="CV_Daniel_Navarro.pdf" download><button class="btn-hire" data-es="descargar_cv ↓" data-en="download_cv ↓">descargar_cv ↓</button></a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="wrap">
-      <span class="sysline"><span class="dot">●</span> SYSTEM_ONLINE — <span data-es="disponible para trabajar" data-en="available for work">disponible para trabajar</span></span>
-      <div class="prompt">$ navarro --portfolio<span class="blink">_</span></div>
-      <h1 class="hero-name">DANIEL NAVARRO<br><span class="l2">FULL-STACK DEV</span></h1>
-      <div class="hero-box">
-        <p data-es="Desarrollador web full-stack con base en <b>Madrid</b>. Construyo soluciones a medida con <b>PHP</b>, <b>JavaScript</b> y <b>WordPress</b>, e integraciones con ERP/CRM vía APIs REST. Interesado en <b>ciberseguridad</b>." data-en="Full-stack web developer based in <b>Madrid</b>. I build custom solutions with <b>PHP</b>, <b>JavaScript</b> and <b>WordPress</b>, plus ERP/CRM integrations via REST APIs. Interested in <b>cybersecurity</b>.">Desarrollador web full-stack con base en <b>Madrid</b>. Construyo soluciones a medida con <b>PHP</b>, <b>JavaScript</b> y <b>WordPress</b>, e integraciones con ERP/CRM vía APIs REST. Interesado en <b>ciberseguridad</b>.</p>
-        <div class="hero-btns">
-          <a href="#proj"><button class="tbtn solid" data-es="[ VER_PROYECTOS ]" data-en="[ VIEW_PROJECTS ]">[ VER_PROYECTOS ]</button></a>
-          <a href="CV_Daniel_Navarro.pdf" download><button class="tbtn" data-es="[ DESCARGAR_CV ]" data-en="[ DOWNLOAD_CV ]">[ DESCARGAR_CV ]</button></a>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about">
+  <section class="block contact" id="contacto">
     <div class="wrap">
-      <div class="term">
-        <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">about_me.sh</span><span class="ctrls">_ □ ✕</span></div>
-        <div class="term-body">
-          <div class="about-grid">
-            <div>
-              <div class="photo-frame"><img src="data:image/jpeg;base64,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" alt="Daniel Navarro" /></div>
-              <div class="photo-cap">[ user_photo.jpg ]</div>
-            </div>
-            <div class="uinfo">
-              <h3>USER_INFO</h3>
-              <p data-es="Soy un desarrollador full-stack júnior titulado en el Grado Superior de Desarrollo de Aplicaciones Web. En mis prácticas en Essenzial Green desarrollé plugins PHP que conectan WordPress con Dolibarr ERP y EspoCRM mediante APIs REST. Me gusta el código limpio, resolver problemas y aprender rápido." data-en="I'm a junior full-stack developer with a Higher Degree in Web Application Development. During my internship at Essenzial Green I built PHP plugins connecting WordPress with Dolibarr ERP and EspoCRM via REST APIs. I value clean code, problem-solving and learning fast.">Soy un desarrollador full-stack júnior titulado en el Grado Superior de Desarrollo de Aplicaciones Web. En mis prácticas en Essenzial Green desarrollé plugins PHP que conectan WordPress con Dolibarr ERP y EspoCRM mediante APIs REST. Me gusta el código limpio, resolver problemas y aprender rápido.</p>
-              <div class="meta">
-                <div><span class="k">LOCATION&nbsp;:</span> <span class="v">Madrid, España</span></div>
-                <div><span class="k">STATUS&nbsp;&nbsp;&nbsp;:</span> <span class="v ok" data-es="Disponible para trabajar" data-en="Open to work">Disponible para trabajar</span></div>
-                <div><span class="k">ALIAS&nbsp;&nbsp;&nbsp;&nbsp;:</span> <span class="v">@DanielNavarroFernandez</span></div>
-              </div>
-              <div class="ustats">
-                <div class="ustat"><div class="n">1+</div><div class="t" data-es="AÑOS DE EXPERIENCIA" data-en="YEARS OF EXPERIENCE">AÑOS DE EXPERIENCIA</div></div>
-                <div class="ustat"><div class="n">3+</div><div class="t" data-es="PROYECTOS CONSTRUIDOS" data-en="PROJECTS BUILT">PROYECTOS CONSTRUIDOS</div></div>
-                <div class="ustat"><div class="n">2</div><div class="t" data-es="GRADOS SUPERIORES" data-en="HIGHER DEGREES">GRADOS SUPERIORES</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="sec-head"><h2 data-en="Let's Talk">¿Hablamos?</h2><p data-en="If you have an opening or a project, I'll get back to you soon.">Si tienes una vacante o un proyecto, te respondo pronto.</p></div>
+      <a class="big" href="mailto:d.navarrofernandez@gmail.com">d.navarrofernandez@gmail.com</a>
+      <div class="contact-grid">
+        <ul class="links-list">
+          <li><span data-en="Phone">Teléfono</span><a href="tel:+34651562319">+34 651 56 23 19</a></li>
+          <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/daniel-navarro-fernandez-a14381173" target="_blank" rel="noopener">daniel-navarro-fernandez</a></li>
+          <li><span>GitHub</span><a href="https://github.com/DanielNavarroFernandez" target="_blank" rel="noopener">DanielNavarroFernandez</a></li>
+          <li><span>CV</span><a href="CV_Daniel_Navarro.pdf" download data-en="Download PDF">Descargar PDF</a></li>
+        </ul>
+        <form id="contact-form" novalidate>
+          <div class="field"><label for="c-name" data-en="Name">Nombre</label><input id="c-name" name="name" autocomplete="name" required aria-describedby="c-status"></div>
+          <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" spellcheck="false" required aria-describedby="c-status"></div>
+          <div class="field"><label for="c-msg" data-en="Message">Mensaje</label><textarea id="c-msg" name="message" autocomplete="off" required aria-describedby="c-status"></textarea></div>
+          <button class="btn btn-grad" type="submit" id="c-send" data-en="Send Message">Enviar mensaje</button>
+          <p class="form-status" id="c-status" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </div>
   </section>
+</main>
 
-  <!-- TECH STACK -->
-  <section id="stack">
-    <div class="wrap">
-      <h2 class="sec-h">TECH_STACK</h2>
-      <div class="stack-grid">
-        <div class="stack-col">
-          <h4>FRONT_END</h4>
-          <ul><li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>jQuery</li><li>Bootstrap</li></ul>
-        </div>
-        <div class="stack-col">
-          <h4>BACK_END</h4>
-          <ul><li>PHP</li><li>Java</li><li>MySQL / SQL</li><li>WordPress</li><li>WooCommerce</li></ul>
-        </div>
-        <div class="stack-col">
-          <h4>DEVOPS</h4>
-          <ul><li>Git / GitHub</li><li>Apache</li><li>AWS (basics)</li><li>Linux / VirtualBox</li><li>XAMPP</li></ul>
-        </div>
-        <div class="stack-col">
-          <h4 data-es="INTEGRACIONES" data-en="INTEGRATIONS">INTEGRACIONES</h4>
-          <ul><li>REST APIs</li><li>Dolibarr ERP</li><li>EspoCRM</li><li>AJAX</li></ul>
-        </div>
-      </div>
-    </div>
-  </section>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Daniel Navarro Fernández</span>
+    <span><a href="https://github.com/DanielNavarroFernandez" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/daniel-navarro-fernandez-a14381173" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+</footer>
 
-  <!-- EXECUTION HISTORY -->
-  <section id="exp">
-    <div class="wrap">
-      <h2 class="sec-h">EXECUTION_HISTORY</h2>
-      <div class="term">
-        <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">experience.json</span><span class="ctrls">_ □ ✕</span></div>
-        <div class="term-body">
-          <div class="json">
-<span class="pun">[</span>
-<div class="ind"><span class="pun">{</span></div>
-<div class="ind2"><span class="key">"company"</span><span class="pun">:</span> <span class="str">"Essenzial Green"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"role"</span><span class="pun">:</span> <span class="str" data-es="&quot;Desarrollador de Integraciones WordPress&quot;" data-en="&quot;WordPress Integration Developer&quot;">"Desarrollador de Integraciones WordPress"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"period"</span><span class="pun">:</span> <span class="str" data-es="&quot;FCT · ene–abr 2026&quot;" data-en="&quot;Internship · Jan–Apr 2026&quot;">"FCT · ene–abr 2026"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"impact"</span><span class="pun">:</span> <span class="pun">[</span></div>
-<div class="ind3"><span class="str" data-es="&quot;Plugins PHP que conectan WordPress con Dolibarr ERP y EspoCRM vía REST&quot;" data-en="&quot;PHP plugins connecting WordPress with Dolibarr ERP and EspoCRM via REST&quot;">"Plugins PHP que conectan WordPress con Dolibarr ERP y EspoCRM vía REST"</span><span class="pun">,</span></div>
-<div class="ind3"><span class="str" data-es="&quot;Facturación recurrente automatizada (~1.600 líneas, WP-Cron, ciclos de 90 días)&quot;" data-en="&quot;Automated recurring invoicing (~1,600 lines, WP-Cron, 90-day cycles)&quot;">"Facturación recurrente automatizada (~1.600 líneas, WP-Cron, ciclos de 90 días)"</span></div>
-<div class="ind2"><span class="pun">]</span></div>
-<div class="ind"><span class="pun">},</span></div>
-<div class="ind"><span class="pun">{</span></div>
-<div class="ind2"><span class="key">"company"</span><span class="pun">:</span> <span class="str">"500Cosmetic"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"role"</span><span class="pun">:</span> <span class="str" data-es="&quot;Diseñador Web &amp; Programador&quot;" data-en="&quot;Web Designer &amp; Programmer&quot;">"Diseñador Web &amp; Programador"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"period"</span><span class="pun">:</span> <span class="str">"mar–jun 2023"</span><span class="pun">,</span></div>
-<div class="ind2"><span class="key">"impact"</span><span class="pun">:</span> <span class="pun">[</span></div>
-<div class="ind3"><span class="str" data-es="&quot;Páginas de producto y blogs multidioma&quot;" data-en="&quot;Product pages and multilingual blogs&quot;">"Páginas de producto y blogs multidioma"</span><span class="pun">,</span></div>
-<div class="ind3"><span class="str" data-es="&quot;Aplicaciones internas y mantenimiento de funcionalidades&quot;" data-en="&quot;Internal apps and feature maintenance&quot;">"Aplicaciones internas y mantenimiento de funcionalidades"</span></div>
-<div class="ind2"><span class="pun">]</span></div>
-<div class="ind"><span class="pun">}</span></div>
-<span class="pun">]</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+(function () {
+  var lang = 'es';
+  var msgs = {
+    es: { sending: 'Enviando…', ok: 'Mensaje enviado. Te responderé pronto.', fail: 'No se ha podido enviar. Escríbeme directamente a d.navarrofernandez@gmail.com.', empty: 'Rellena nombre, email y mensaje para enviarlo.', email: 'Revisa el email: tiene que ser del tipo nombre@empresa.com.', pause: 'Pausar animación', play: 'Reanudar animación' },
+    en: { sending: 'Sending…', ok: 'Message sent. I’ll get back to you soon.', fail: 'The message couldn’t be sent. Email me directly at d.navarrofernandez@gmail.com.', empty: 'Fill in your name, email and message to send it.', email: 'Check the email: it should look like name@company.com.', pause: 'Pause animation', play: 'Resume animation' }
+  };
 
-  <!-- PROJECTS -->
-  <section id="proj">
-    <div class="wrap">
-      <h2 class="sec-h">ACTIVE_PROJECTS</h2>
-      <div class="proj-grid">
-        <div class="term proj">
-          <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">alcantara_barbershop</span><span class="ctrls">_ □ ✕</span></div>
-          <div class="term-body">
-            <p data-es="Sistema web completo para una barbería: reservas online, tienda, gestión de clientes y panel de administración, con plugins de WordPress hechos desde cero. (TFG)" data-en="Complete web system for a barbershop: online bookings, store, client management and admin panel, with custom WordPress plugins built from scratch. (Final project)">Sistema web completo para una barbería: reservas online, tienda, gestión de clientes y panel de administración, con plugins de WordPress hechos desde cero. (TFG)</p>
-            <div class="proj-tags"><span class="ptag">WordPress</span><span class="ptag">PHP</span><span class="ptag">MySQL</span><span class="ptag">WooCommerce</span></div>
-            <a class="proj-link" href="https://tfg-danielnavarro.infinityfreeapp.com/wordpress" target="_blank" data-es="ver_en_vivo" data-en="view_live">ver_en_vivo</a>
-          </div>
-        </div>
-        <div class="term proj">
-          <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">printcalc</span><span class="ctrls">_ □ ✕</span></div>
-          <div class="term-body">
-            <p data-es="Calculadora de costes de impresión 3D como PWA instalable. Calcula material, tiempo y precio de cada pieza, con funcionamiento offline." data-en="3D printing cost calculator as an installable PWA. Computes material, time and price per piece, and works offline.">Calculadora de costes de impresión 3D como PWA instalable. Calcula material, tiempo y precio de cada pieza, con funcionamiento offline.</p>
-            <div class="proj-tags"><span class="ptag">PWA</span><span class="ptag">JavaScript</span><span class="ptag">CSS3</span></div>
-            <a class="proj-link" href="https://printcalc-danielnavarro.netlify.app" target="_blank" data-es="ver_en_vivo" data-en="view_live">ver_en_vivo</a>
-          </div>
-        </div>
-        <div class="term proj">
-          <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">hayday_bot</span><span class="ctrls">_ □ ✕</span></div>
-          <div class="term-body">
-            <p data-es="Bot de Discord para gestionar compras y ventas de Hay Day: panel visual con menús y botones, carrito por usuario, imágenes automáticas y +400 productos bilingües." data-en="Discord bot to manage Hay Day trades: visual panel with menus and buttons, per-user cart, auto-generated images and 400+ bilingual products.">Bot de Discord para gestionar compras y ventas de Hay Day: panel visual con menús y botones, carrito por usuario, imágenes automáticas y +400 productos bilingües.</p>
-            <div class="proj-tags"><span class="ptag">Node.js</span><span class="ptag">Discord.js</span><span class="ptag">JavaScript</span></div>
-            <a class="proj-link" href="https://github.com/DanielNavarroFernandez/HayDay-Bot" target="_blank" data-es="ver_en_github" data-en="view_on_github">ver_en_github</a>
-          </div>
-        </div>
-        <div class="term proj">
-          <div class="term-bar"><span class="sq"></span><span class="sq"></span><span class="sq"></span><span class="fname">more --github</span><span class="ctrls">_ □ ✕</span></div>
-          <div class="term-body">
-            <p data-es="Más experimentos, plugins y prototipos en mi GitHub. Siempre construyendo algo nuevo." data-en="More experiments, plugins and prototypes on my GitHub. Always building something new.">Más experimentos, plugins y prototipos en mi GitHub. Siempre construyendo algo nuevo.</p>
-            <div class="proj-tags"><span class="ptag">Git</span><span class="ptag">+repos</span></div>
-            <a class="proj-link" href="https://github.com/DanielNavarroFernandez" target="_blank">github.com/DanielNavarroFernandez</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  /* Idioma: se guarda el texto en español para poder volver a él. */
+  document.querySelectorAll('[data-en]').forEach(function (el) { el.dataset.es = el.innerHTML; });
+  document.querySelectorAll('[data-en-svg]').forEach(function (el) { el.dataset.esSvg = el.textContent; });
+  document.querySelectorAll('[data-en-aria]').forEach(function (el) { el.dataset.esAria = el.getAttribute('aria-label') || ''; });
+  function setLang(l, save) {
+    lang = l;
+    document.querySelectorAll('[data-en]').forEach(function (el) { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.es; });
+    document.querySelectorAll('[data-en-svg]').forEach(function (el) { el.textContent = l === 'en' ? el.dataset.enSvg : el.dataset.esSvg; });
+    document.querySelectorAll('[data-en-aria]').forEach(function (el) { el.setAttribute('aria-label', l === 'en' ? el.dataset.enAria : el.dataset.esAria); });
+    document.documentElement.lang = l;
+    document.getElementById('b-es').setAttribute('aria-pressed', l === 'es');
+    document.getElementById('b-en').setAttribute('aria-pressed', l === 'en');
+    syncPause();
+    renderInfo();
+    if (save) { try { localStorage.setItem('lang', l); } catch (e) {} }
+  }
+  document.getElementById('b-es').addEventListener('click', function () { setLang('es', true); });
+  document.getElementById('b-en').addEventListener('click', function () { setLang('en', true); });
 
-  <!-- EDUCATION -->
-  <section id="edu">
-    <div class="wrap">
-      <h2 class="sec-h">EDUCATION_LOGS</h2>
-      <div class="edu-item">
-        <div class="yr">2025–2026 · <span data-es="COMPLETADO" data-en="COMPLETED">COMPLETADO</span></div>
-        <div class="ti" data-es="Grado Superior — DAW (Desarrollo de Aplicaciones Web)" data-en="Higher Degree — DAW (Web Application Development)">Grado Superior — DAW (Desarrollo de Aplicaciones Web)</div>
-        <div class="de" data-es="Desarrollo web full-stack. TFG: sistema de gestión para una barbería real (WordPress, PHP, MySQL)." data-en="Full-stack web development. Final project: management system for a real barbershop (WordPress, PHP, MySQL).">Desarrollo web full-stack. TFG: sistema de gestión para una barbería real (WordPress, PHP, MySQL).</div>
-      </div>
-      <div class="edu-item">
-        <div class="yr">2021–2023 · <span data-es="COMPLETADO" data-en="COMPLETED">COMPLETADO</span></div>
-        <div class="ti" data-es="Grado Superior — DAM (Aplicaciones Multiplataforma)" data-en="Higher Degree — DAM (Cross-Platform Applications)">Grado Superior — DAM (Aplicaciones Multiplataforma)</div>
-        <div class="de" data-es="Programación orientada a objetos, bases de datos y desarrollo multiplataforma (Java)." data-en="Object-oriented programming, databases and cross-platform development (Java).">Programación orientada a objetos, bases de datos y desarrollo multiplataforma (Java).</div>
-      </div>
-      <div class="edu-item">
-        <div class="yr"><span data-es="COMPLETADO" data-en="COMPLETED">COMPLETADO</span></div>
-        <div class="ti" data-es="Cursillo online de programación" data-en="Online programming course">Cursillo online de programación</div>
-        <div class="de" data-es="Formación complementaria online." data-en="Complementary online training.">Formación complementaria online.</div>
-      </div>
-      <div class="edu-item">
-        <div class="yr"><span data-es="COMPLETADO" data-en="COMPLETED">COMPLETADO</span></div>
-        <div class="ti">Bachillerato</div>
-        <div class="de" data-es="Educación secundaria postobligatoria." data-en="Post-compulsory secondary education.">Educación secundaria postobligatoria.</div>
-      </div>
-    </div>
-  </section>
+  /* Pausa de los esquemas animados */
+  var pauseBtn = document.getElementById('viz-pause');
+  var animated = document.querySelectorAll('.viz svg, .hub svg');
+  var paused = false;
+  function syncPause() {
+    if (!pauseBtn) return;
+    pauseBtn.setAttribute('aria-pressed', paused);
+    pauseBtn.setAttribute('aria-label', paused ? msgs[lang].play : msgs[lang].pause);
+  }
+  function setPaused(p) {
+    paused = p;
+    animated.forEach(function (s) { if (s.pauseAnimations) { p ? s.pauseAnimations() : s.unpauseAnimations(); } });
+    document.querySelector('.viz').classList.toggle('paused', p);
+    syncPause();
+  }
+  pauseBtn.addEventListener('click', function () { setPaused(!paused); });
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) setPaused(true);
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="wrap">
-      <h2 class="sec-h">CONTACT_USER</h2>
-      <p class="amber-dim" style="margin-bottom:1.6rem;font-size:0.86rem;" data-es="// Inicia conexión rellenando los parámetros:" data-en="// Initialize connection by filling the parameters:">// Inicia conexión rellenando los parámetros:</p>
-      <form class="contact-form" onsubmit="sendMsg(event)">
-        <div class="field"><label data-es="USER_NAME" data-en="USER_NAME">USER_NAME</label><input id="c-name" name="name" type="text" required placeholder="[ nombre ]" /></div>
-        <div class="field"><label data-es="USER_EMAIL" data-en="USER_EMAIL">USER_EMAIL</label><input id="c-email" name="email" type="email" required placeholder="[ email ]" /></div>
-        <div class="field"><label data-es="MESSAGE_PAYLOAD" data-en="MESSAGE_PAYLOAD">MESSAGE_PAYLOAD</label><textarea id="c-msg" name="message" rows="4" required placeholder="--- start of message ---"></textarea></div>
-        <button type="submit" class="tbtn solid" data-es="SEND_MESSAGE.EXE" data-en="SEND_MESSAGE.EXE">SEND_MESSAGE.EXE</button>
-        <div id="c-status" style="margin-top:0.9rem;font-size:0.8rem;min-height:1.2em;"></div>
-      </form>
-      <div class="contact-side" style="margin-top:2rem;">
-        <div><span class="amber-dim">EMAIL&nbsp;&nbsp;&nbsp;:</span> <a href="mailto:d.navarrofernandez@gmail.com">d.navarrofernandez@gmail.com</a></div>
-        <div><span class="amber-dim">PHONE&nbsp;&nbsp;&nbsp;:</span> <a href="tel:651562319">651 562 319</a></div>
-        <div><span class="amber-dim">GITHUB&nbsp;&nbsp;:</span> <a href="https://github.com/DanielNavarroFernandez" target="_blank">github.com/DanielNavarroFernandez</a></div>
-      </div>
-    </div>
-  </section>
 
-  <footer>
-    <div class="foot-in">
-      <span>NAVARRO.DEV © 2026 — <span data-es="construido con precisión" data-en="built with precision">construido con precisión</span></span>
-      <span><a href="https://github.com/DanielNavarroFernandez" target="_blank">GITHUB</a> &nbsp; <a href="mailto:d.navarrofernandez@gmail.com">EMAIL</a></span>
-    </div>
-  </footer>
+  /* Esquema interactivo: al pulsar una caja se ilumina su camino y se explica qué hace */
+  var INFO = {
+    woo:  { nodes: ['woo', 'core', 'doli'], wires: ['w1', 'w3'],
+            es: { t: 'WooCommerce.', d: 'Cuando un pedido pasa a completado, WordPress lanza un evento y empieza el proceso que acaba en una factura.', x: 'Hook: woocommerce_order_status_completed' },
+            en: { t: 'WooCommerce.', d: 'When an order is marked completed, WordPress fires an event that starts the process ending in an invoice.', x: 'Hook: woocommerce_order_status_completed' } },
+    wp:   { nodes: ['wp', 'core', 'espo'], wires: ['w2', 'w4'],
+            es: { t: 'WordPress y Sensei LMS.', d: 'Las altas de usuarios, los cursos y los certificados de la plataforma de formación también lanzan eventos que recogen los plugins.', x: 'Hooks de WordPress y Sensei LMS' },
+            en: { t: 'WordPress and Sensei LMS.', d: 'New users, courses and certificates on the learning platform also fire events that the plugins pick up.', x: 'WordPress and Sensei LMS hooks' } },
+    core: { nodes: ['woo', 'wp', 'core', 'doli', 'espo'], wires: ['w1', 'w2', 'w3', 'w4'],
+            es: { t: 'Plugins PHP.', d: 'Hechos desde cero. Escuchan los eventos de WordPress, adaptan los datos al formato de cada sistema y llaman a sus APIs REST. WP-Cron se encarga de lo periódico.', x: 'PHP · wp_remote_post · WP-Cron' },
+            en: { t: 'PHP plugins.', d: 'Built from scratch. They listen to WordPress events, adapt the data to each system and call their REST APIs. WP-Cron handles the scheduled work.', x: 'PHP · wp_remote_post · WP-Cron' } },
+    doli: { nodes: ['woo', 'core', 'doli'], wires: ['w1', 'w3'],
+            es: { t: 'Dolibarr (ERP).', d: 'Cada pedido crea su factura mediante la API REST de Dolibarr, y la facturación recurrente se repite sola cada 90 días.', x: 'API REST de Dolibarr' },
+            en: { t: 'Dolibarr (ERP).', d: 'Each order creates its invoice through the Dolibarr REST API, and recurring billing repeats on its own every 90 days.', x: 'Dolibarr REST API' } },
+    espo: { nodes: ['wp', 'core', 'espo'], wires: ['w2', 'w4'],
+            es: { t: 'EspoCRM.', d: 'Usuarios, cursos y certificados se sincronizan con el CRM, y ahí se lanzan las automatizaciones BPM.', x: 'API REST de EspoCRM · BPM' },
+            en: { t: 'EspoCRM.', d: 'Users, courses and certificates sync to the CRM, where BPM automations take over.', x: 'EspoCRM REST API · BPM' } }
+  };
+  var viz = document.querySelector('.viz');
+  var capDefault = document.getElementById('cap-default'), capInfo = document.getElementById('cap-info');
+  var capT = document.getElementById('cap-t'), capD = document.getElementById('cap-d'), capX = document.getElementById('cap-x');
+  var current = null;
+  function renderInfo() {
+    if (!current || !capT) return;
+    var t = INFO[current][lang === 'en' ? 'en' : 'es'];
+    capT.textContent = t.t; capD.textContent = t.d; capX.textContent = t.x;
+    capDefault.hidden = true; capInfo.hidden = false;
+  }
+  function clearSel() {
+    current = null;
+    viz.classList.remove('has-sel');
+    viz.querySelectorAll('.node[data-node]').forEach(function (n) { n.classList.remove('sel', 'dim'); n.setAttribute('aria-pressed', 'false'); });
+    viz.querySelectorAll('[data-w]').forEach(function (el) { el.classList.remove('on', 'off'); });
+    capDefault.hidden = false; capInfo.hidden = true;
+  }
+  function selectNode(k) {
+    if (current === k) { clearSel(); return; }
+    current = k;
+    var o = INFO[k];
+    viz.classList.add('has-sel');
+    viz.querySelectorAll('.node[data-node]').forEach(function (n) {
+      var key = n.getAttribute('data-node');
+      n.classList.toggle('sel', key === k);
+      n.classList.toggle('dim', o.nodes.indexOf(key) === -1);
+      n.setAttribute('aria-pressed', key === k);
+    });
+    viz.querySelectorAll('[data-w]').forEach(function (el) {
+      var on = o.wires.indexOf(el.getAttribute('data-w')) !== -1;
+      el.classList.toggle('on', on); el.classList.toggle('off', !on);
+    });
+    renderInfo();
+  }
+  viz.querySelectorAll('.node[data-node]').forEach(function (n) {
+    n.addEventListener('click', function () { selectNode(n.getAttribute('data-node')); });
+    n.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNode(n.getAttribute('data-node')); } });
+  });
+  viz.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current) clearSel(); });
+  document.getElementById('cap-back').addEventListener('click', clearSel);
 
-  <script>
-    let lang = 'es';
-    function setLang(l) {
-      lang = l;
-      document.querySelectorAll('[data-es][data-en]').forEach(function(el){
-        var v = el.getAttribute('data-' + l);
-        if (v !== null) el.innerHTML = v;
+  /* Luz que sigue al ratón en la portada */
+  var hero = document.querySelector('.hero'), spot = hero.querySelector('.spot'), raf = 0, sx = 0, sy = 0;
+  function moveSpot(e) {
+    var r = hero.getBoundingClientRect();
+    sx = e.clientX - r.left; sy = e.clientY - r.top;
+    if (!raf) raf = requestAnimationFrame(function () { raf = 0; spot.style.setProperty('--x', sx + 'px'); spot.style.setProperty('--y', sy + 'px'); });
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    hero.addEventListener('pointermove', moveSpot);
+    hero.addEventListener('pointerdown', moveSpot);
+  }
+
+  /* Idioma inicial: el elegido antes o, si no hay, el del navegador. */
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  var browser = ((navigator.languages && navigator.languages[0]) || navigator.language || 'es').toLowerCase();
+  if (saved === 'en' || (!saved && browser.indexOf('es') !== 0)) setLang('en', false); else syncPause();
+
+  /* Pestañas Esquema / Código */
+  var tabs = [document.getElementById('t-diagram'), document.getElementById('t-code')];
+  function showTab(i) {
+    tabs.forEach(function (t, j) {
+      var on = i === j;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { showTab(i); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); var n = (i + 1) % 2; showTab(n); tabs[n].focus(); }
+    });
+  });
+
+  /* Formulario de contacto (FormSubmit) */
+  var form = document.getElementById('contact-form');
+  var status = document.getElementById('c-status');
+  var send = document.getElementById('c-send');
+  var fields = [form.name, form.email, form.message];
+  fields.forEach(function (f) { f.addEventListener('input', function () { f.removeAttribute('aria-invalid'); }); });
+  form.addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    status.className = 'form-status';
+    var bad = null, why = 'empty';
+    fields.forEach(function (f) {
+      var invalid = !f.value.trim() || (f === form.email && !f.checkValidity());
+      if (invalid) { f.setAttribute('aria-invalid', 'true'); if (!bad) { bad = f; why = (f === form.email && f.value.trim()) ? 'email' : 'empty'; } }
+      else f.removeAttribute('aria-invalid');
+    });
+    if (bad) { status.classList.add('err'); status.textContent = msgs[lang][why]; bad.focus(); return; }
+    status.textContent = msgs[lang].sending;
+    send.disabled = true;
+    try {
+      var r = await fetch('https://formsubmit.co/ajax/d.navarrofernandez@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name: form.name.value.trim(), email: form.email.value.trim(), message: form.message.value.trim(), _subject: 'Nuevo contacto desde el portfolio', _captcha: 'false' })
       });
-      document.documentElement.lang = l;
-      document.getElementById('b-es').classList.toggle('active', l === 'es');
-      document.getElementById('b-en').classList.toggle('active', l === 'en');
-    }
-    async function sendMsg(ev) {
-      ev.preventDefault();
-      var status = document.getElementById('c-status');
-      status.style.color = 'var(--amber-dim)';
-      status.textContent = '> ' + (lang === 'en' ? 'sending...' : 'enviando...');
-      var payload = {
-        name: document.getElementById('c-name').value,
-        email: document.getElementById('c-email').value,
-        message: document.getElementById('c-msg').value,
-        _subject: 'Nuevo contacto desde el portfolio',
-        _captcha: 'false'
-      };
-      try {
-        var r = await fetch('https://formsubmit.co/ajax/d.navarrofernandez@gmail.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        var j = await r.json();
-        if (j.success === 'true' || j.success === true) {
-          status.style.color = 'var(--green)';
-          status.textContent = '\u2713 ' + (lang === 'en' ? 'message sent successfully' : 'mensaje enviado correctamente');
-          ev.target.reset();
-        } else {
-          status.style.color = '#ff6b6b';
-          status.textContent = '\u2717 ' + (j.message || (lang === 'en' ? 'try again' : 'inténtalo de nuevo'));
-        }
-      } catch (e) {
-        status.style.color = '#ff6b6b';
-        status.textContent = '\u2717 ' + (lang === 'en' ? 'connection error' : 'error de conexión');
-      }
-    }
-  </script>
+      var j = await r.json();
+      if (j.success === true || j.success === 'true') { status.classList.add('ok'); status.textContent = msgs[lang].ok; form.reset(); }
+      else throw new Error();
+    } catch (e) {
+      status.classList.add('err'); status.textContent = msgs[lang].fail;
+    } finally { send.disabled = false; }
+  });
+})();
+</script>
 </body>
 </html>
